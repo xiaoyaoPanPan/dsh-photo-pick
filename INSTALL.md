@@ -31,10 +31,9 @@ dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo
 npx -y --package @deepseek-ai/dsh dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-### 2) 若 pnpm 拦截构建脚本（少见）
+### 2) 放行构建脚本（pnpm 11 常见）
 
-本仓库已提交预构建的 `lib/`，一般**不需要**再跑 TypeScript `prepare`。
-若仍报 `allowBuilds` / `GIT_DEP_PREPARE_NOT_ALLOWED`（例如 `sharp` 原生模块）：
+仓库已带预构建 `lib/`，`prepare` 只做存在性检查，但仍可能被 pnpm 拦截。若报 `allowBuilds` / `GIT_DEP_PREPARE_NOT_ALLOWED`：
 
 1. 打开 profile 的 `pnpm-workspace.yaml`（默认 `~/.dsh/profiles/web/pnpm-workspace.yaml`；若设置了 `DSH_HOME`，用 `$DSH_HOME/profiles/web/pnpm-workspace.yaml`）。
 2. **优先复制 pnpm 报错里打印的整行键名**写入：
@@ -42,6 +41,18 @@ npx -y --package @deepseek-ai/dsh dsh plugin --profile web add "github:xiaoyaoPa
 ```yaml
 allowBuilds:
   <把 pnpm 打印的那一整行键原样贴这里>: true
+```
+
+也可先写短键；若不够再按报错补全：
+
+```yaml
+allowBuilds:
+  dsh-photo-pick-app: true
+  dsh-photo-pick: true
+  dsh-photo-pick-local: true
+  dsh-photo-pick-ui: true
+  dsh-tool-photo-pick: true
+  sharp: true
 ```
 
 3. 再跑一遍同样的 `plugin add`。

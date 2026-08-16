@@ -47,7 +47,8 @@
   },
   "scripts": {
     "build": "tsc -b && tsdown",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepare": "node -e \"require('node:fs').accessSync('lib/index.js')\""
   },
   "dependencies": {
     "dsh-photo-pick": "file:../dsh-photo-pick",

@@ -31,10 +31,9 @@ If `dsh` is not on PATH:
 npx -y --package @deepseek-ai/dsh dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-### 2) Allow build scripts only if pnpm asks (uncommon)
+### 2) Allow build scripts (common on pnpm 11)
 
-This repo ships prebuilt `lib/` folders, so a TypeScript `prepare` step is usually unnecessary.
-If pnpm still errors with `allowBuilds` / `GIT_DEP_PREPARE_NOT_ALLOWED` (for example `sharp` native bindings):
+The repo ships prebuilt `lib/`; `prepare` only checks that those files exist, but pnpm may still block it. If you see `allowBuilds` / `GIT_DEP_PREPARE_NOT_ALLOWED`:
 
 1. Open the profile `pnpm-workspace.yaml` (default `~/.dsh/profiles/web/pnpm-workspace.yaml`; if `DSH_HOME` is set, use `$DSH_HOME/profiles/web/pnpm-workspace.yaml`).
 2. **Paste the exact key printed by pnpm**:
@@ -42,6 +41,18 @@ If pnpm still errors with `allowBuilds` / `GIT_DEP_PREPARE_NOT_ALLOWED` (for exa
 ```yaml
 allowBuilds:
   <paste the exact key from pnpm here>: true
+```
+
+Short keys may work first; always follow what pnpm prints if they differ:
+
+```yaml
+allowBuilds:
+  dsh-photo-pick-app: true
+  dsh-photo-pick: true
+  dsh-photo-pick-local: true
+  dsh-photo-pick-ui: true
+  dsh-tool-photo-pick: true
+  sharp: true
 ```
 
 3. Re-run the same `plugin add` command.
