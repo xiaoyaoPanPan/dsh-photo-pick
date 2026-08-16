@@ -69,7 +69,7 @@ https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/SETUP-VISION.md
 自己动手的最短路径：
 
 1. 魔搭注册并创建 [SDK Token](https://www.modelscope.cn/my/myaccesstoken)。  
-2. **设置 → 模型 → 添加自定义提供方**：Base URL 填 `https://api-inference.modelscope.cn/v1/`，协议选 OpenAI 兼容，填 Token 与 VL 模型 id。  
+2. **设置 → 模型 → 添加自定义提供方**：Base URL 填 `https://api-inference.modelscope.cn/v1/`，协议选 OpenAI 兼容，填 Token 与 VL 模型 id（示例：`Qwen/Qwen2.5-VL-7B-Instruct`）。  
 3. 在 `~/.dsh/settings.yaml` 给该模型加上 `input: [text, image]`（自定义模型默认当纯文本，不加则打分会失败）。细节见 [SETUP-VISION.md](SETUP-VISION.md)。  
 4. **设置 → 照片择优**：开启视觉打分，选刚配的模型，保存。
 
