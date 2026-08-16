@@ -31,31 +31,20 @@ dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo
 npx -y --package @deepseek-ai/dsh dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-### 2) 放行 prepare 构建（pnpm ≥10 / 11 很常见）
+### 2) 若 pnpm 拦截构建脚本（少见）
 
-从 Git 安装会跑各包 `prepare`。若报错提到 `allowBuilds` / `GIT_DEP_PREPARE_NOT_ALLOWED`：
+本仓库已提交预构建的 `lib/`，一般**不需要**再跑 TypeScript `prepare`。
+若仍报 `allowBuilds` / `GIT_DEP_PREPARE_NOT_ALLOWED`（例如 `sharp` 原生模块）：
 
-1. 打开 profile 的 `pnpm-workspace.yaml`（默认 `~/.dsh/profiles/web/pnpm-workspace.yaml`；若启动时设置了 `DSH_HOME`，则是 `$DSH_HOME/profiles/web/pnpm-workspace.yaml`）。没有就新建。
-2. **优先复制 pnpm 报错里打印的整行键名**（pnpm 11 常是长键，例如 `dsh-photo-pick-app@https://codeload.github.com/.../tar.gz/<sha>#path:dsh-photo-pick-app`），写入：
+1. 打开 profile 的 `pnpm-workspace.yaml`（默认 `~/.dsh/profiles/web/pnpm-workspace.yaml`；若设置了 `DSH_HOME`，用 `$DSH_HOME/profiles/web/pnpm-workspace.yaml`）。
+2. **优先复制 pnpm 报错里打印的整行键名**写入：
 
 ```yaml
 allowBuilds:
   <把 pnpm 打印的那一整行键原样贴这里>: true
 ```
 
-也可先写短键再按报错补全：
-
-```yaml
-allowBuilds:
-  dsh-photo-pick-app: true
-  dsh-photo-pick: true
-  dsh-photo-pick-local: true
-  dsh-photo-pick-ui: true
-  dsh-tool-photo-pick: true
-```
-
-3. 若还提示 `sharp` 等包，同样按打印键名追加 `: true`。
-4. 再跑一遍同样的 `plugin add`。
+3. 再跑一遍同样的 `plugin add`。
 
 ### 3) 安装 Agent Preset
 
@@ -71,7 +60,7 @@ PowerShell（默认 home）：
 pnpm --dir "$env:USERPROFILE\.dsh\profiles\web" exec dsh-photo-pick-setup-preset
 ```
 
-若使用了自定义 `DSH_HOME`（例如本机测试目录）：
+若使用了自定义 `DSH_HOME`：
 
 ```powershell
 pnpm --dir "$env:DSH_HOME\profiles\web" exec dsh-photo-pick-setup-preset

@@ -50,12 +50,7 @@
   "scripts": {
     "build": "tsc -b && tsdown",
     "bundle": "tsdown",
-    "prepare": "npx --no-install tsdown --config tsdown.prepare.config.ts || npx --yes tsdown@0.22.2 --config tsdown.prepare.config.ts",
     "test": "vitest run"
-  },
-  "dependencies": {
-    "lightningcss": "^1.32.0",
-    "tsdown": "^0.22.2"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "*",
@@ -85,7 +80,9 @@
     "@types/react": "~18.3.1",
     "@types/react-dom": "~18.3.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tsdown": "^0.22.2",
+    "lightningcss": "^1.32.0"
   },
   "author": {
     "name": "xiaoyaoPanPan",

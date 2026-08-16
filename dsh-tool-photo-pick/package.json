@@ -32,12 +32,10 @@
   ],
   "scripts": {
     "build": "tsc -b && tsdown",
-    "prepare": "npx --no-install tsdown --config tsdown.prepare.config.ts || npx --yes tsdown@0.22.2 --config tsdown.prepare.config.ts",
     "test": "vitest run"
   },
   "dependencies": {
-    "dsh-photo-pick": "file:../dsh-photo-pick",
-    "tsdown": "^0.22.2"
+    "dsh-photo-pick": "file:../dsh-photo-pick"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "*",
@@ -53,7 +51,8 @@
     "@deepseek-ai/dsh-system-prompt": "*",
     "@deepseek-ai/dsh-tools": "*",
     "dsh-photo-pick": "file:../dsh-photo-pick",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "tsdown": "^0.22.2"
   },
   "author": {
     "name": "xiaoyaoPanPan",

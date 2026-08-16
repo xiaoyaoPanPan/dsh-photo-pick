@@ -1,0 +1,1 @@
+{"version":3,"file":"PhotoPickResultRow.d.ts","sourceRoot":"","sources":["../../../src/client/PhotoPickResultRow.tsx"],"names":[],"mappings":"AAAA;;;GAGG;AAIH,OAAO,KAAK,EAAE,WAAW,EAAE,MAAM,kCAAkC,CAAA;AACnE,OAAO,KAAK,EAAE,iBAAiB,EAAE,MAAM,wCAAwC,CAAA;AAK/E,KAAK,uBAAuB,GAAG,iBAAiB,GAAG,WAAW,CAAC,qBAAqB,CAAC,CAAA;AAKrF;;;GAGG;AACH,wBAAgB,kBAAkB,CAAC,KAAK,EAAE,uBAAuB,sCA4FhE"}

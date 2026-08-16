@@ -33,13 +33,11 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -b && tsdown",
-    "prepare": "npx --no-install tsdown --config tsdown.prepare.config.ts || npx --yes tsdown@0.22.2 --config tsdown.prepare.config.ts",
     "test": "vitest run"
   },
   "dependencies": {
     "dsh-photo-pick": "file:../dsh-photo-pick",
-    "sharp": "^0.35.3",
-    "tsdown": "^0.22.2"
+    "sharp": "^0.35.3"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "*",
@@ -62,7 +60,8 @@
     "@deepseek-ai/schemastery": "*",
     "dsh-photo-pick": "file:../dsh-photo-pick",
     "sharp": "^0.35.3",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "tsdown": "^0.22.2"
   },
   "author": {
     "name": "xiaoyaoPanPan",

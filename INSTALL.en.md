@@ -31,31 +31,20 @@ If `dsh` is not on PATH:
 npx -y --package @deepseek-ai/dsh dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-### 2) Allow prepare builds (common on pnpm ≥10 / 11)
+### 2) Allow build scripts only if pnpm asks (uncommon)
 
-Git installs run each package's `prepare` script. If the command fails mentioning `allowBuilds` / `GIT_DEP_PREPARE_NOT_ALLOWED`:
+This repo ships prebuilt `lib/` folders, so a TypeScript `prepare` step is usually unnecessary.
+If pnpm still errors with `allowBuilds` / `GIT_DEP_PREPARE_NOT_ALLOWED` (for example `sharp` native bindings):
 
-1. Open the profile `pnpm-workspace.yaml` (default `~/.dsh/profiles/web/pnpm-workspace.yaml`; if `DSH_HOME` is set, use `$DSH_HOME/profiles/web/pnpm-workspace.yaml`). Create it if missing.
-2. **Prefer the exact key printed by pnpm** (pnpm 11 often uses a long key such as `dsh-photo-pick-app@https://codeload.github.com/.../tar.gz/<sha>#path:dsh-photo-pick-app`):
+1. Open the profile `pnpm-workspace.yaml` (default `~/.dsh/profiles/web/pnpm-workspace.yaml`; if `DSH_HOME` is set, use `$DSH_HOME/profiles/web/pnpm-workspace.yaml`).
+2. **Paste the exact key printed by pnpm**:
 
 ```yaml
 allowBuilds:
   <paste the exact key from pnpm here>: true
 ```
 
-Short keys may work as a first try; always follow what pnpm prints if they differ:
-
-```yaml
-allowBuilds:
-  dsh-photo-pick-app: true
-  dsh-photo-pick: true
-  dsh-photo-pick-local: true
-  dsh-photo-pick-ui: true
-  dsh-tool-photo-pick: true
-```
-
-3. If pnpm also asks for `sharp` (or other packages), append those printed keys too.
-4. Re-run the same `plugin add` command.
+3. Re-run the same `plugin add` command.
 
 ### 3) Install the Agent Preset
 
@@ -71,7 +60,7 @@ PowerShell (default home):
 pnpm --dir "$env:USERPROFILE\.dsh\profiles\web" exec dsh-photo-pick-setup-preset
 ```
 
-Custom `DSH_HOME` (for example a local test directory):
+Custom `DSH_HOME`:
 
 ```powershell
 pnpm --dir "$env:DSH_HOME\profiles\web" exec dsh-photo-pick-setup-preset

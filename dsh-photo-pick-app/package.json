@@ -47,15 +47,13 @@
   },
   "scripts": {
     "build": "tsc -b && tsdown",
-    "prepare": "npx --no-install tsdown --config tsdown.prepare.config.ts || npx --yes tsdown@0.22.2 --config tsdown.prepare.config.ts",
     "test": "vitest run"
   },
   "dependencies": {
     "dsh-photo-pick": "file:../dsh-photo-pick",
     "dsh-photo-pick-local": "file:../dsh-photo-pick-local",
     "dsh-photo-pick-ui": "file:../dsh-photo-pick-ui",
-    "dsh-tool-photo-pick": "file:../dsh-tool-photo-pick",
-    "tsdown": "^0.22.2"
+    "dsh-tool-photo-pick": "file:../dsh-tool-photo-pick"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "*",
@@ -65,7 +63,8 @@
     "@deepseek-ai/cordis": "*",
     "@deepseek-ai/dsh-invariants": "*",
     "js-yaml": "^4.1.0",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "tsdown": "^0.22.2"
   },
   "author": {
     "name": "xiaoyaoPanPan",
