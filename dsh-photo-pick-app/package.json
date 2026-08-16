@@ -66,5 +66,22 @@
     "js-yaml": "^4.1.0",
     "tsdown": "^0.22.2",
     "vitest": "^3.2.4"
-  }
+  },
+  "author": {
+    "name": "xiaoyaoPanPan",
+    "url": "https://github.com/xiaoyaoPanPan"
+  },
+  "bugs": {
+    "url": "https://github.com/xiaoyaoPanPan/dsh-photo-pick/issues"
+  },
+  "homepage": "https://github.com/xiaoyaoPanPan/dsh-photo-pick#readme",
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "photo",
+    "vision",
+    "ranking",
+    "plugin"
+  ]
 }

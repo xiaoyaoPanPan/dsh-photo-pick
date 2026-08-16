@@ -43,5 +43,13 @@
     "@deepseek-ai/cordis": "*",
     "@deepseek-ai/dsh-invariants": "*",
     "tsdown": "^0.22.2"
-  }
+  },
+  "author": {
+    "name": "xiaoyaoPanPan",
+    "url": "https://github.com/xiaoyaoPanPan"
+  },
+  "bugs": {
+    "url": "https://github.com/xiaoyaoPanPan/dsh-photo-pick/issues"
+  },
+  "homepage": "https://github.com/xiaoyaoPanPan/dsh-photo-pick#readme"
 }

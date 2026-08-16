@@ -10,5 +10,17 @@
   },
   "scripts": {
     "build": "pnpm -r --filter \"./dsh-photo-pick\" --filter \"./dsh-photo-pick-local\" --filter \"./dsh-tool-photo-pick\" --filter \"./dsh-photo-pick-ui\" --filter \"./dsh-photo-pick-app\" run build"
+  },
+  "author": {
+    "name": "xiaoyaoPanPan",
+    "url": "https://github.com/xiaoyaoPanPan"
+  },
+  "bugs": {
+    "url": "https://github.com/xiaoyaoPanPan/dsh-photo-pick/issues"
+  },
+  "homepage": "https://github.com/xiaoyaoPanPan/dsh-photo-pick#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaoyaoPanPan/dsh-photo-pick.git"
   }
 }

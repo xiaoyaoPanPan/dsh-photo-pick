@@ -16,6 +16,11 @@ DeepSeek Harness 插件：对近似照片打分并推荐更好的几张。对外
 
 许可证：[MIT](LICENSE)。git / `prepare` 说明：[OPENSOURCE.zh.md](OPENSOURCE.zh.md)。
 
+## 作者
+
+维护者：[xiaoyaoPanPan](https://github.com/xiaoyaoPanPan)  
+问题反馈：[github.com/xiaoyaoPanPan/dsh-photo-pick/issues](https://github.com/xiaoyaoPanPan/dsh-photo-pick/issues)
+
 ## 安装（Web profile）
 
 需要已安装的 `dsh` CLI 与 `web` profile（[官方文档](https://deepseek-harness.github.io/deepseek-harness/develop/basic/publish)）。

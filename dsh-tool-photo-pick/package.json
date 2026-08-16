@@ -54,5 +54,14 @@
     "dsh-photo-pick": "file:../dsh-photo-pick",
     "tsdown": "^0.22.2",
     "vitest": "^3.2.4"
-  }
+  },
+  "author": {
+    "name": "xiaoyaoPanPan",
+    "url": "https://github.com/xiaoyaoPanPan"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xiaoyaoPanPan/dsh-photo-pick/issues"
+  },
+  "homepage": "https://github.com/xiaoyaoPanPan/dsh-photo-pick#readme"
 }

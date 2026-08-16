@@ -16,6 +16,11 @@ Works with the **official** dsh / Web profile. Soft-optional: if you also instal
 
 License: [MIT](LICENSE). Install notes for git/`prepare`: [OPENSOURCE.md](OPENSOURCE.md).
 
+## Author
+
+Maintainer: [xiaoyaoPanPan](https://github.com/xiaoyaoPanPan)  
+Issues: [github.com/xiaoyaoPanPan/dsh-photo-pick/issues](https://github.com/xiaoyaoPanPan/dsh-photo-pick/issues)
+
 ## Install (Web profile)
 
 Requires a working `dsh` CLI and a `web` profile ([official docs](https://deepseek-harness.github.io/deepseek-harness/en/develop/basic/publish)).
