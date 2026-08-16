@@ -1,18 +1,18 @@
-# Install notes (git / prepare)
+# 安装说明（git / prepare）
 
-English | [中文](OPENSOURCE.zh.md)
+中文 | [English](OPENSOURCE.en.md)
 
-**Users:** start from the [README](README.md) (“Install in 10 seconds”) or [INSTALL.md](INSTALL.md).
+**普通用户：** 看 [README](README.md) 的「10 秒安装」，或直接打开 [INSTALL.md](INSTALL.md)。
 
-This repo is a multi-package dsh plugin monorepo. Consumers install only `dsh-photo-pick-app`.
+本仓是多包 dsh 插件 monorepo。对外只装 `dsh-photo-pick-app`。
 
 ```sh
 dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-Git installs fetch **sources**, not `lib/`. Each package’s `prepare` script runs `tsdown.prepare.config.ts` to transpile from `src/` without a harness monorepo checkout (see official [publish](https://deepseek-harness.github.io/deepseek-harness/en/develop/basic/publish) docs).
+从 git 安装拿到的是**源码**，不是 `lib/`。各包 `prepare` 会跑 `tsdown.prepare.config.ts`，在没有 harness monorepo 的情况下从 `src/` 转译（见官方[打包与安装](https://deepseek-harness.github.io/deepseek-harness/develop/basic/publish)）。
 
-pnpm ≥10 refuses those scripts until allowlisted. Put the exact keys from the first failed `add` into `~/.dsh/profiles/web/pnpm-workspace.yaml`, for example:
+pnpm ≥10 会拦截这些脚本，直到放行。把第一次失败 `add` 打印的键写进 `~/.dsh/profiles/web/pnpm-workspace.yaml`，例如：
 
 ```yaml
 allowBuilds:
@@ -23,17 +23,17 @@ allowBuilds:
   dsh-tool-photo-pick: true
 ```
 
-Then re-run `add` and:
+再跑 `add`，然后：
 
 ```sh
 pnpm --dir "${DSH_HOME:-$HOME/.dsh}/profiles/web" exec dsh-photo-pick-setup-preset
 ```
 
-Pin a commit when sharing: `github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app#<sha>`.
+对外分享请钉 commit：`github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app#<sha>`。
 
-## Maintainer notes
+## 维护者备注
 
-- Sibling packages use `file:../…` (required for profile installs).
-- In-fork harness `tsc -b` paths do not apply here; `prepare` is the consumer build.
-- `dsh-photo-pick-ui` uses `tsdown.client-standalone.ts` for prepare; keep it aligned with the shell client module table when that changes.
-- Soft dependency on `ctx.mediaLibrary` only — do not hard-require a media plugin.
+- 兄弟包用 `file:../…`（装进 profile 所必需）。
+- 本仓消费者不依赖 harness 的 `tsc -b`；`prepare` 才是安装构建。
+- `dsh-photo-pick-ui` 的 prepare 走 `tsdown.client-standalone.ts`；壳层模块表变更时请同步。
+- 对 `ctx.mediaLibrary` 仅软依赖，不要硬依赖 media 插件。

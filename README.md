@@ -1,68 +1,68 @@
 # dsh-photo-pick
 
-English | [中文](README.zh.md)
+中文 | [English](README.en.md)
 
-**Pick the best shot from a burst.** A DeepSeek Harness (dsh) plugin that scores similar photos with vision and recommends winners.
+**从连拍里选出更好的那几张。** DeepSeek Harness（dsh）插件：用视觉给近似照片打分并推荐。
 
-## Install in 10 seconds (recommended)
+## 10 秒安装（推荐）
 
-Copy this to Cursor / ChatGPT / Claude / your coding agent:
+把下面整段复制给 Cursor / ChatGPT / Claude / 你正在用的编程 AI：
 
 ```text
-Install and configure dsh-photo-pick for my DeepSeek Harness web profile by following
+请按这篇指南，把 dsh-photo-pick 安装到我本机的 DeepSeek Harness web profile，并完成验收：
 https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/INSTALL.md
-Then run the verification steps and tell me the result.
+装完后告诉我每一步是否成功。
 ```
 
-That’s it. The agent handles `plugin add`, `allowBuilds`, and the Agent Preset.
+就这样。AI 会处理 `plugin add`、`allowBuilds` 和 Agent Preset。
 
-## Or install yourself
+## 或自己动手
 
-Needs official `dsh` and a `web` profile (`dsh web` works).
+需要官方 `dsh`，且 `dsh web` 能跑。
 
 ```sh
 dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-If pnpm blocks build scripts, add the printed `allowBuilds` keys under `~/.dsh/profiles/web/pnpm-workspace.yaml`, then re-run the same command. Next:
+若 pnpm 拦截构建脚本：把报错里的 `allowBuilds` 键写进 `~/.dsh/profiles/web/pnpm-workspace.yaml`，再跑同一条命令。然后：
 
 ```sh
 pnpm --dir "${DSH_HOME:-$HOME/.dsh}/profiles/web" exec dsh-photo-pick-setup-preset
 ```
 
-Windows PowerShell:
+Windows PowerShell：
 
 ```powershell
 pnpm --dir "$env:USERPROFILE\.dsh\profiles\web" exec dsh-photo-pick-setup-preset
 ```
 
-Hard-refresh or restart `dsh web`.
+硬刷新或重启 `dsh web`。
 
-## Use
+## 怎么用
 
-1. Open a workspace with photos.
-2. Select Agent Preset **照片择优**.
-3. Open the session-header **照片择优** workspace → pick photos / criteria → Confirm to chat.
-4. Ask the agent to run `photo_pick_best`, then open **Compare** on the tool card.
+1. 打开含照片的工作区。
+2. 选择 Agent Preset **照片择优**。
+3. 打开会话顶栏 **照片择优** 工作区 → 选图 / 填要求 → 填入对话。
+4. 让 Agent 跑 `photo_pick_best`，再在工具卡片点 **对比查看**。
 
-Optional: if you also have a media-library plugin with `ctx.mediaLibrary`, you can gather candidates via `query`. Paths-only ranking works without it.
+可选：若另装了带 `ctx.mediaLibrary` 的素材库，可用 `query` 取候选；只选路径也能择优。
 
-## Uninstall
+## 卸载
 
 ```sh
 dsh plugin --profile web remove dsh-photo-pick-app
 rm -rf "${DSH_HOME:-$HOME/.dsh}/.agent-presets/photo-pick"
 ```
 
-## Author
+## 作者
 
 [xiaoyaoPanPan](https://github.com/xiaoyaoPanPan) · [Issues](https://github.com/xiaoyaoPanPan/dsh-photo-pick/issues) · [MIT](LICENSE)
 
 <details>
-<summary>For developers</summary>
+<summary>给开发者</summary>
 
-- Packages: `dsh-photo-pick` / `-local` / `-ui` / `dsh-tool-photo-pick` / `dsh-photo-pick-app` (install only the app).
-- Git/`prepare` notes: [OPENSOURCE.md](OPENSOURCE.md) · AI install script: [INSTALL.md](INSTALL.md).
-- Local checkout: `dsh plugin --profile web add "file:./dsh-photo-pick-app"` then run `dsh-photo-pick-setup-preset`.
+- 包：`dsh-photo-pick` / `-local` / `-ui` / `dsh-tool-photo-pick` / `dsh-photo-pick-app`（对外只装 app）。
+- git/`prepare`：[OPENSOURCE.md](OPENSOURCE.md) · AI 安装步骤：[INSTALL.md](INSTALL.md) · [English install](INSTALL.en.md)。
+- 本地：`dsh plugin --profile web add "file:./dsh-photo-pick-app"`，再跑 `dsh-photo-pick-setup-preset`。
 
 </details>
