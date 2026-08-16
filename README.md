@@ -1,8 +1,20 @@
-# dsh-photo-pick
-
-中文 | [English](README.en.md)
-
-**从连拍里选出更好的那几张。** DeepSeek Harness（dsh）插件：用视觉给近似照片打分并推荐。
+<p align="center">
+  <h1 align="center">dsh-photo-pick</h1>
+  <p align="center"><b>从连拍里选出更好的那几张。</b><br/>DeepSeek Harness（dsh）插件：用视觉给近似照片打分并推荐。</p>
+  <p align="center">
+    <a href="./README.md">中文</a> ·
+    <a href="./README.en.md">English</a> ·
+    <a href="./INSTALL.md">AI 安装</a> ·
+    <a href="https://github.com/xiaoyaoPanPan/dsh-photo-pick/issues">Issues</a>
+  </p>
+  <p align="center">
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="MIT" /></a>
+    <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%5E22.19%20%7C%7C%20%3E%3D24-brightgreen?style=flat-square" alt="Node.js" /></a>
+    <a href="https://github.com/topics/dsh-plugin"><img src="https://img.shields.io/badge/topic-dsh--plugin-111827?style=flat-square" alt="dsh-plugin" /></a>
+    <a href="https://github.com/xiaoyaoPanPan/dsh-photo-pick/stargazers"><img src="https://img.shields.io/github/stars/xiaoyaoPanPan/dsh-photo-pick?style=flat-square" alt="Stars" /></a>
+    <a href="https://github.com/xiaoyaoPanPan/dsh-photo-pick/issues"><img src="https://img.shields.io/github/issues/xiaoyaoPanPan/dsh-photo-pick?style=flat-square" alt="Issues" /></a>
+  </p>
+</p>
 
 ## 10 秒安装（推荐）
 
