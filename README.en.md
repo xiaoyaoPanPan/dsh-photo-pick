@@ -36,7 +36,7 @@ Needs official `dsh` and a working `dsh web` profile.
 dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-If pnpm blocks build scripts, add the printed `allowBuilds` keys under `~/.dsh/profiles/web/pnpm-workspace.yaml`, then re-run the same command. Next:
+On pnpm 11: first set `blockExoticSubdeps: false` in `~/.dsh/profiles/web/pnpm-workspace.yaml` (or `$DSH_HOME/profiles/web/…`), then run the `add` above. If pnpm asks for `allowBuilds`, paste the printed keys and re-run. Next:
 
 ```sh
 pnpm --dir "${DSH_HOME:-$HOME/.dsh}/profiles/web" exec dsh-photo-pick-setup-preset

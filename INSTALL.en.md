@@ -19,7 +19,19 @@ Install package: `github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app`
 
 ## Install steps
 
-### 1) Add the plugin
+### 1) Allow git transitive deps (required on pnpm 11)
+
+This plugin is a multi-package monorepo; siblings cross-reference with `github:…#path:`. pnpm blocks exotic (git) subdependencies by default — open that gate first.
+
+Edit the profile `pnpm-workspace.yaml` (default `~/.dsh/profiles/web/pnpm-workspace.yaml`; if `DSH_HOME` is set, use `$DSH_HOME/profiles/web/pnpm-workspace.yaml`) and merge:
+
+```yaml
+blockExoticSubdeps: false
+```
+
+Do not delete unrelated existing keys.
+
+### 2) Add the plugin
 
 ```sh
 dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
@@ -31,31 +43,7 @@ If `dsh` is not on PATH:
 npx -y --package @deepseek-ai/dsh dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-### 2) Allow build scripts (common on pnpm 11)
-
-The repo ships prebuilt `lib/`; `prepare` only checks that those files exist, but pnpm may still block it. If you see `allowBuilds` / `GIT_DEP_PREPARE_NOT_ALLOWED`:
-
-1. Open the profile `pnpm-workspace.yaml` (default `~/.dsh/profiles/web/pnpm-workspace.yaml`; if `DSH_HOME` is set, use `$DSH_HOME/profiles/web/pnpm-workspace.yaml`).
-2. **Paste the exact key printed by pnpm**:
-
-```yaml
-allowBuilds:
-  <paste the exact key from pnpm here>: true
-```
-
-Short keys may work first; always follow what pnpm prints if they differ:
-
-```yaml
-allowBuilds:
-  dsh-photo-pick-app: true
-  dsh-photo-pick: true
-  dsh-photo-pick-local: true
-  dsh-photo-pick-ui: true
-  dsh-tool-photo-pick: true
-  sharp: true
-```
-
-3. Re-run the same `plugin add` command.
+The repo ships prebuilt `lib/` and has **no** install-time `prepare` build. If pnpm still asks for `allowBuilds` (e.g. native `sharp`), paste the **exact key** it prints under `allowBuilds:` in the same `pnpm-workspace.yaml`, then re-run `add`.
 
 ### 3) Install the Agent Preset
 
@@ -79,12 +67,12 @@ pnpm --dir "$env:DSH_HOME\profiles\web" exec dsh-photo-pick-setup-preset
 
 ### 4) Verify
 
-1. Restart or hard-refresh `dsh web` (Ctrl/Cmd+Shift+R).
+1. Hard-refresh or restart `dsh web` (Ctrl/Cmd+Shift+R).
 2. Open a workspace that contains photos.
-3. Select Agent Preset **照片择优**.
-4. Confirm Settings shows Photo pick / 照片择优, and the session header can open the photo-pick workspace.
+3. Select the **Photo pick** Agent Preset.
+4. Confirm Photo pick appears in settings and the session chrome can open the picker.
 
-## Uninstall (if asked)
+## Uninstall (if the user asks)
 
 ```sh
 dsh plugin --profile web remove dsh-photo-pick-app
@@ -101,6 +89,7 @@ Remove-Item -Recurse -Force "$env:USERPROFILE\.dsh\.agent-presets\photo-pick" -E
 ## Notes for the agent
 
 - Do **not** require the Gitee fork `deepseek-harness-xy`; this plugin targets official dsh.
-- Sibling packages already use `github:…#path:` cross-refs; if you still see `ERR_PNPM_LINKED_PKG_DIR_NOT_FOUND` / `file:../`, the install hit an old commit — confirm `main` is current.
+- Write `blockExoticSubdeps: false` **before** `plugin add`; the reverse order yields `ERR_PNPM_EXOTIC_SUBDEP`.
+- If you still see `ERR_PNPM_LINKED_PKG_DIR_NOT_FOUND` / `file:../`, the install hit an old commit — confirm `main` is current.
 - Soft-optional: a media library providing `ctx.mediaLibrary` enables `query` candidate search; paths-only ranking works without it.
 - Tell the user the result of each step (ok / failed + the exact error).

@@ -32,8 +32,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "tsc -b && tsdown",
-    "prepare": "node -e \"require('node:fs').accessSync('lib/index.js')\""
+    "build": "tsc -b && tsdown"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "*",

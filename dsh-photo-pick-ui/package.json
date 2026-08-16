@@ -50,8 +50,7 @@
   "scripts": {
     "build": "tsc -b && tsdown",
     "bundle": "tsdown",
-    "test": "vitest run",
-    "prepare": "node -e \"require('node:fs').accessSync('lib/index.js')\""
+    "test": "vitest run"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "*",

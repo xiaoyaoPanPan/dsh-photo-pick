@@ -33,8 +33,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -b && tsdown",
-    "test": "vitest run",
-    "prepare": "node -e \"require('node:fs').accessSync('lib/index.js')\""
+    "test": "vitest run"
   },
   "dependencies": {
     "dsh-photo-pick": "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick",

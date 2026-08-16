@@ -36,7 +36,7 @@
 dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-若 pnpm 拦截构建脚本：把报错里的 `allowBuilds` 键写进 `~/.dsh/profiles/web/pnpm-workspace.yaml`，再跑同一条命令。然后：
+pnpm 11：先在 `~/.dsh/profiles/web/pnpm-workspace.yaml`（或 `$DSH_HOME/profiles/web/…`）写入 `blockExoticSubdeps: false`，再跑上面的 `add`。若还提示 `allowBuilds`，把报错里的键补上再重跑。然后：
 
 ```sh
 pnpm --dir "${DSH_HOME:-$HOME/.dsh}/profiles/web" exec dsh-photo-pick-setup-preset

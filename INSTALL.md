@@ -19,7 +19,19 @@
 
 ## 安装步骤
 
-### 1) 添加插件
+### 1) 允许 git 传递依赖（pnpm 11 必需）
+
+本插件是多包 monorepo，兄弟包用 `github:…#path:` 互指。pnpm 默认禁止「传递的 git 依赖」，需先放开。
+
+打开 profile 的 `pnpm-workspace.yaml`（默认 `~/.dsh/profiles/web/pnpm-workspace.yaml`；若设置了 `DSH_HOME`，用 `$DSH_HOME/profiles/web/pnpm-workspace.yaml`），合并：
+
+```yaml
+blockExoticSubdeps: false
+```
+
+不要删掉文件里已有的其它键。
+
+### 2) 添加插件
 
 ```sh
 dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
@@ -31,31 +43,7 @@ dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo
 npx -y --package @deepseek-ai/dsh dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-### 2) 放行构建脚本（pnpm 11 常见）
-
-仓库已带预构建 `lib/`，`prepare` 只做存在性检查，但仍可能被 pnpm 拦截。若报 `allowBuilds` / `GIT_DEP_PREPARE_NOT_ALLOWED`：
-
-1. 打开 profile 的 `pnpm-workspace.yaml`（默认 `~/.dsh/profiles/web/pnpm-workspace.yaml`；若设置了 `DSH_HOME`，用 `$DSH_HOME/profiles/web/pnpm-workspace.yaml`）。
-2. **优先复制 pnpm 报错里打印的整行键名**写入：
-
-```yaml
-allowBuilds:
-  <把 pnpm 打印的那一整行键原样贴这里>: true
-```
-
-也可先写短键；若不够再按报错补全：
-
-```yaml
-allowBuilds:
-  dsh-photo-pick-app: true
-  dsh-photo-pick: true
-  dsh-photo-pick-local: true
-  dsh-photo-pick-ui: true
-  dsh-tool-photo-pick: true
-  sharp: true
-```
-
-3. 再跑一遍同样的 `plugin add`。
+仓库已带预构建 `lib/`，**没有**安装期 `prepare` 编译。若仍报 `allowBuilds`（例如 `sharp` 原生模块），把 pnpm 打印的**整行键**写入同一 `pnpm-workspace.yaml` 的 `allowBuilds:`，再重跑 `add`。
 
 ### 3) 安装 Agent Preset
 
@@ -101,6 +89,7 @@ Remove-Item -Recurse -Force "$env:USERPROFILE\.dsh\.agent-presets\photo-pick" -E
 ## 给 Agent 的备注
 
 - **不要**要求用户先装 Gitee fork `deepseek-harness-xy`；本插件面向官方 dsh。
-- 兄弟包已用 `github:…#path:` 互指；若仍见 `ERR_PNPM_LINKED_PKG_DIR_NOT_FOUND` / `file:../`，说明装到了旧 commit，请确认拉的是最新 `main`。
+- 必须先写 `blockExoticSubdeps: false`，再 `plugin add`；顺序反了会报 `ERR_PNPM_EXOTIC_SUBDEP`。
+- 若见 `ERR_PNPM_LINKED_PKG_DIR_NOT_FOUND` / `file:../`，说明装到了旧 commit，请确认拉的是最新 `main`。
 - 软可选：有提供 `ctx.mediaLibrary` 的素材库时可用 `query`；只传路径也能择优。
 - 每一步向用户汇报结果（成功 / 失败 + 原始报错）。

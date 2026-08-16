@@ -12,21 +12,16 @@ dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo
 
 ## Install strategy
 
-1. **Prebuilt `lib/`**: commit runnable artifacts; `prepare` only checks that `lib/index.js` exists (no `tsdown` on the consumer machine).
-2. **Sibling deps use `github:…#path:`**: do not use `file:../…`. When pnpm installs a GitHub subpath package, it resolves `file:../` against the consumer profile directory ([pnpm#9141](https://github.com/pnpm/pnpm/issues/9141)).
+1. **Prebuilt `lib/`**: commit runnable artifacts; packages have **no** install-time `prepare` (avoids pnpm's nested `npm install` for git packages pulling unpublished peers).
+2. **Sibling deps use `github:…#path:`**: do not use `file:../…` (pnpm resolves those against the consumer profile dir — [pnpm#9141](https://github.com/pnpm/pnpm/issues/9141)).
+3. **Consumer profiles need** `blockExoticSubdeps: false`: otherwise pnpm 11 rejects transitive git deps (`ERR_PNPM_EXOTIC_SUBDEP`).
 
-pnpm ≥10 may still block `prepare`. Paste the **exact key** from the first failed `add` into the profile `pnpm-workspace.yaml` (see [INSTALL.en.md](INSTALL.en.md)), re-run `add`, then:
-
-```sh
-pnpm --dir "${DSH_HOME:-$HOME/.dsh}/profiles/web" exec dsh-photo-pick-setup-preset
-```
-
-Pin a commit when sharing: `github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app#<sha>`.
+Full steps: [INSTALL.en.md](INSTALL.en.md).
 
 ## Maintainer notes
 
 - After changing `src/`, rebuild and **commit the updated `lib/`** (root `build-all.ps1` works on Windows).
 - Keep sibling deps as `github:xiaoyaoPanPan/dsh-photo-pick#path:<package-dir>`; do not revert to `file:../…`.
-- Keep `prepare` as an existence check; do not restore `tsdown --config tsdown.prepare.config.ts` for installs.
-- Local development: after cloning this repo, `dsh plugin add "file:./dsh-photo-pick-app"` (path relative to the checkout root) still works.
+- Do not restore install-time `prepare` / `tsdown` unless the nested `npm install` problem is solved another way.
+- Local development: after cloning, `dsh plugin add "file:./dsh-photo-pick-app"` still works.
 - Soft dependency on `ctx.mediaLibrary` only — do not hard-require a media plugin.
