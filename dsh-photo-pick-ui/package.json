@@ -50,7 +50,7 @@
   "scripts": {
     "build": "tsc -b && tsdown",
     "bundle": "tsdown",
-    "prepare": "tsdown --config tsdown.prepare.config.ts",
+    "prepare": "npx --no-install tsdown --config tsdown.prepare.config.ts || npx --yes tsdown@0.22.2 --config tsdown.prepare.config.ts",
     "test": "vitest run"
   },
   "dependencies": {
