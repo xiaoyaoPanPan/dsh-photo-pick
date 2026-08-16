@@ -6,7 +6,7 @@
 
 ## Install in 10 seconds (recommended)
 
-Copy this to Cursor / ChatGPT / Claude / your coding agent:
+Copy this prompt to Cursor / ChatGPT / Claude / DeepSeek Harness / your coding agent:
 
 ```text
 Install and configure dsh-photo-pick for my DeepSeek Harness web profile by following
@@ -40,15 +40,21 @@ Hard-refresh or restart `dsh web`.
 
 ## Use
 
-### First time (once)
+### Vision model setup (once)
 
 Open **Settings → Photo pick**: enable vision scoring, pick a vision-capable model, save. Without that, scoring fails later.
 
-### Everyday ranking
+### Switch mode and pick
 
-1. **Mount a workspace with photos** (top-left folder, e.g. “我的照片”) and **start a new chat**.
-2. Open the mode dropdown next to it (default **标准模式**) and switch to **照片择优**.
-3. In the composer toolbar, click the **照片择优** button → the pick dialog opens.
+1. **Mount a workspace with photos** (top-left folder) and **start a new chat**.
+2. Open the mode dropdown above the composer (default **标准模式**) and switch to **照片择优**.
+
+   ![Switch to Photo pick mode](docs/screenshots/mode-switch.png)
+
+3. In the composer toolbar, click **照片择优** → the photo picker opens.
+
+   ![Photo pick button under the composer](docs/screenshots/composer-button.png)
+
 4. Select photos → **Next** (optional this-batch criteria) → **Confirm to chat** → Send.
 5. When the agent finishes, click **Compare** on the tool card.
 
