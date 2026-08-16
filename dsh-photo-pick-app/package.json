@@ -54,7 +54,8 @@
     "dsh-photo-pick": "file:../dsh-photo-pick",
     "dsh-photo-pick-local": "file:../dsh-photo-pick-local",
     "dsh-photo-pick-ui": "file:../dsh-photo-pick-ui",
-    "dsh-tool-photo-pick": "file:../dsh-tool-photo-pick"
+    "dsh-tool-photo-pick": "file:../dsh-tool-photo-pick",
+    "tsdown": "^0.22.2"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "*",
@@ -64,7 +65,6 @@
     "@deepseek-ai/cordis": "*",
     "@deepseek-ai/dsh-invariants": "*",
     "js-yaml": "^4.1.0",
-    "tsdown": "^0.22.2",
     "vitest": "^3.2.4"
   },
   "author": {

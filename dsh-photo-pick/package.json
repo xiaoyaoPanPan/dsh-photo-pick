@@ -35,14 +35,16 @@
     "build": "tsc -b && tsdown",
     "prepare": "tsdown --config tsdown.prepare.config.ts"
   },
+  "dependencies": {
+    "tsdown": "^0.22.2"
+  },
   "peerDependencies": {
     "@deepseek-ai/cordis": "*",
     "@deepseek-ai/dsh-invariants": "*"
   },
   "devDependencies": {
     "@deepseek-ai/cordis": "*",
-    "@deepseek-ai/dsh-invariants": "*",
-    "tsdown": "^0.22.2"
+    "@deepseek-ai/dsh-invariants": "*"
   },
   "author": {
     "name": "xiaoyaoPanPan",

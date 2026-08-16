@@ -31,12 +31,19 @@ If `dsh` is not on PATH:
 npx -y --package @deepseek-ai/dsh dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-### 2) Allow prepare builds (common on pnpm ≥10)
+### 2) Allow prepare builds (common on pnpm ≥10 / 11)
 
-Git installs run each package's `prepare` script. If the command fails mentioning `allowBuilds` / ignored build scripts:
+Git installs run each package's `prepare` script. If the command fails mentioning `allowBuilds` / `GIT_DEP_PREPARE_NOT_ALLOWED`:
 
-1. Open `~/.dsh/profiles/web/pnpm-workspace.yaml` (create if missing).
-2. Merge (do not wipe unrelated keys):
+1. Open the profile `pnpm-workspace.yaml` (default `~/.dsh/profiles/web/pnpm-workspace.yaml`; if `DSH_HOME` is set, use `$DSH_HOME/profiles/web/pnpm-workspace.yaml`). Create it if missing.
+2. **Prefer the exact key printed by pnpm** (pnpm 11 often uses a long key such as `dsh-photo-pick-app@https://codeload.github.com/.../tar.gz/<sha>#path:dsh-photo-pick-app`):
+
+```yaml
+allowBuilds:
+  <paste the exact key from pnpm here>: true
+```
+
+Short keys may work as a first try; always follow what pnpm prints if they differ:
 
 ```yaml
 allowBuilds:
@@ -47,7 +54,7 @@ allowBuilds:
   dsh-tool-photo-pick: true
 ```
 
-3. Prefer the **exact** package keys printed by pnpm if they differ.
+3. If pnpm also asks for `sharp` (or other packages), append those printed keys too.
 4. Re-run the same `plugin add` command.
 
 ### 3) Install the Agent Preset
@@ -58,10 +65,16 @@ bash / macOS / Linux:
 pnpm --dir "${DSH_HOME:-$HOME/.dsh}/profiles/web" exec dsh-photo-pick-setup-preset
 ```
 
-PowerShell:
+PowerShell (default home):
 
 ```powershell
 pnpm --dir "$env:USERPROFILE\.dsh\profiles\web" exec dsh-photo-pick-setup-preset
+```
+
+Custom `DSH_HOME` (for example a local test directory):
+
+```powershell
+pnpm --dir "$env:DSH_HOME\profiles\web" exec dsh-photo-pick-setup-preset
 ```
 
 ### 4) Verify
