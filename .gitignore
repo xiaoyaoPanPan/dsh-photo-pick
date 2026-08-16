@@ -1,3 +1,7 @@
 node_modules/
 *.tsbuildinfo
 *.tmp
+package-lock.json
+
+# Local install-debug dumps (session exports, etc.)
+.插件安装问题/

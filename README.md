@@ -83,7 +83,7 @@ rm -rf "${DSH_HOME:-$HOME/.dsh}/.agent-presets/photo-pick"
 <summary>给开发者</summary>
 
 - 包：`dsh-photo-pick` / `-local` / `-ui` / `dsh-tool-photo-pick` / `dsh-photo-pick-app`（对外只装 app）。
-- git/`prepare`：[OPENSOURCE.md](OPENSOURCE.md) · AI 安装：[INSTALL.md](INSTALL.md) · AI 配视觉：[SETUP-VISION.md](SETUP-VISION.md)。
+- git / 预构建 `lib/`：[OPENSOURCE.md](OPENSOURCE.md) · AI 安装：[INSTALL.md](INSTALL.md) · AI 配视觉：[SETUP-VISION.md](SETUP-VISION.md)。
 - 本地：`dsh plugin --profile web add "file:./dsh-photo-pick-app"`，再跑 `dsh-photo-pick-setup-preset`。
 
 </details>

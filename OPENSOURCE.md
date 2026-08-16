@@ -1,4 +1,4 @@
-# 安装说明（git / prepare）
+# 安装说明（git / 预构建 lib）
 
 中文 | [English](OPENSOURCE.en.md)
 
@@ -10,20 +10,23 @@
 dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-从 git 安装拿到的是**源码**，不是 `lib/`。各包 `prepare` 会跑 `tsdown.prepare.config.ts`，在没有 harness monorepo 的情况下从 `src/` 转译（见官方[打包与安装](https://deepseek-harness.github.io/deepseek-harness/develop/basic/publish)）。
+## 安装策略（方案 A）
 
-pnpm ≥10 会拦截这些脚本，直到放行。把第一次失败 `add` 打印的键写进 `~/.dsh/profiles/web/pnpm-workspace.yaml`，例如：
+仓库**提交预构建的 `lib/`**。git 安装不现场跑 `tsdown`。
 
-```yaml
-allowBuilds:
-  dsh-photo-pick-app: true
-  dsh-photo-pick: true
-  dsh-photo-pick-local: true
-  dsh-photo-pick-ui: true
-  dsh-tool-photo-pick: true
+各包 `prepare` 只检查入口存在，例如：
+
+```js
+node -e "require('node:fs').accessSync('lib/index.js')"
 ```
 
-再跑 `add`，然后：
+这样：
+
+- 不依赖 `tsdown` 等开发工具是否被装进消费者环境
+- 仍保留 `prepare`，以便 pnpm/npm 在解压后的 monorepo 里正确解析兄弟包的 `file:../…`
+- 缺 `lib/` 时立刻失败，方便发现漏交产物
+
+pnpm ≥10 仍可能拦截 `prepare`。把第一次失败 `add` 打印的**整行键**写进 profile 的 `pnpm-workspace.yaml`（见 [INSTALL.md](INSTALL.md)），再跑 `add`，然后：
 
 ```sh
 pnpm --dir "${DSH_HOME:-$HOME/.dsh}/profiles/web" exec dsh-photo-pick-setup-preset
@@ -33,7 +36,8 @@ pnpm --dir "${DSH_HOME:-$HOME/.dsh}/profiles/web" exec dsh-photo-pick-setup-pres
 
 ## 维护者备注
 
-- 兄弟包用 `file:../…`（装进 profile 所必需）。
-- 本仓消费者不依赖 harness 的 `tsc -b`；`prepare` 才是安装构建。
-- `dsh-photo-pick-ui` 的 prepare 走 `tsdown.client-standalone.ts`；壳层模块表变更时请同步。
+- 改 `src/` 后必须重建并**提交更新后的 `lib/`**（可用根目录 `build-all.ps1`）。
+- 兄弟包继续用 `file:../…`；不要改成互指 `github:…#path:…`（嵌套 git 依赖会再次踩坑）。
+- `prepare` 保持「存在性检查」，不要改回 `tsdown --config tsdown.prepare.config.ts`。
+- `tsdown.prepare.config.ts` / `tsdown.client-standalone.ts` 可留作本地构建参考，但不是 git 安装路径。
 - 对 `ctx.mediaLibrary` 仅软依赖，不要硬依赖 media 插件。
