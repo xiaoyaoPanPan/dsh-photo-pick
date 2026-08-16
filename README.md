@@ -5,6 +5,7 @@
     <a href="./README.md">中文</a> ·
     <a href="./README.en.md">English</a> ·
     <a href="./INSTALL.md">AI 安装</a> ·
+    <a href="./SETUP-VISION.md">AI 配视觉模型</a> ·
     <a href="https://github.com/xiaoyaoPanPan/dsh-photo-pick/issues">Issues</a>
   </p>
   <p align="center">
@@ -50,11 +51,29 @@ pnpm --dir "$env:USERPROFILE\.dsh\profiles\web" exec dsh-photo-pick-setup-preset
 
 硬刷新或重启 `dsh web`。
 
+## 配置视觉模型（推荐魔搭免费额度）
+
+照片择优需要一个**能看图**的模型。DeepSeek 官方聊天路由是纯文本，不能用来打分。
+
+我们日常推荐用 [魔搭社区 ModelScope](https://www.modelscope.cn/) 的免费推理 API（OpenAI 兼容，注册后一般有每日免费次数，以官网为准），起步可用 `Qwen/Qwen2.5-VL-7B-Instruct`（以魔搭页面仍提供 API 推理为准）。
+
+**最快：把下面提示词复制给 AI**（加自定义提供方、声明看图能力、接到照片择优）：
+
+```text
+请按这篇指南，帮我在 DeepSeek Harness 里配置「照片择优」用的视觉模型（优先魔搭社区免费 API）：
+https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/SETUP-VISION.md
+需要 Token 时向我本机索取，不要把密钥写进公开文件或聊天记录。
+配完后告诉我设置 → 照片择优里应选哪个模型，以及每一步是否成功。
+```
+
+自己动手的最短路径：
+
+1. 魔搭注册并创建 [SDK Token](https://www.modelscope.cn/my/myaccesstoken)。  
+2. **设置 → 模型 → 添加自定义提供方**：Base URL 填 `https://api-inference.modelscope.cn/v1/`，协议选 OpenAI 兼容，填 Token 与 VL 模型 id。  
+3. 在 `~/.dsh/settings.yaml` 给该模型加上 `input: [text, image]`（自定义模型默认当纯文本，不加则打分会失败）。细节见 [SETUP-VISION.md](SETUP-VISION.md)。  
+4. **设置 → 照片择优**：开启视觉打分，选刚配的模型，保存。
+
 ## 怎么用
-
-### 视觉模型配置（只需一次）
-
-打开 **设置 → 照片择优**：开启视觉打分，选一个能看图的模型（标「视觉」），保存。没配好看图模型，后面打分会失败。
 
 ### 切换模式使用
 
@@ -87,7 +106,7 @@ rm -rf "${DSH_HOME:-$HOME/.dsh}/.agent-presets/photo-pick"
 <summary>给开发者</summary>
 
 - 包：`dsh-photo-pick` / `-local` / `-ui` / `dsh-tool-photo-pick` / `dsh-photo-pick-app`（对外只装 app）。
-- git/`prepare`：[OPENSOURCE.md](OPENSOURCE.md) · AI 安装步骤：[INSTALL.md](INSTALL.md) · [English install](INSTALL.en.md)。
+- git/`prepare`：[OPENSOURCE.md](OPENSOURCE.md) · AI 安装：[INSTALL.md](INSTALL.md) · AI 配视觉：[SETUP-VISION.md](SETUP-VISION.md)。
 - 本地：`dsh plugin --profile web add "file:./dsh-photo-pick-app"`，再跑 `dsh-photo-pick-setup-preset`。
 
 </details>

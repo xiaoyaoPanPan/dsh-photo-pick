@@ -5,6 +5,7 @@
     <a href="./README.md">中文</a> ·
     <a href="./README.en.md">English</a> ·
     <a href="./INSTALL.en.md">AI install</a> ·
+    <a href="./SETUP-VISION.en.md">AI vision setup</a> ·
     <a href="https://github.com/xiaoyaoPanPan/dsh-photo-pick/issues">Issues</a>
   </p>
   <p align="center">
@@ -50,11 +51,29 @@ pnpm --dir "$env:USERPROFILE\.dsh\profiles\web" exec dsh-photo-pick-setup-preset
 
 Hard-refresh or restart `dsh web`.
 
+## Configure a vision model (ModelScope recommended)
+
+Scoring needs a **vision / VL** model. Stock DeepSeek chat routes are usually **text-only** and cannot score photos.
+
+We recommend [ModelScope](https://www.modelscope.cn/) free OpenAI-compatible APIs (daily quota after signup; check their site). A light starter: `Qwen/Qwen2.5-VL-7B-Instruct` (must show API inference on their site).
+
+**Fastest: paste this to your coding agent:**
+
+```text
+Follow this guide to configure a free ModelScope vision model in DeepSeek Harness for dsh-photo-pick:
+https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/SETUP-VISION.en.md
+Ask me for the token when needed; never write secrets into public files.
+When done, tell me each step’s result and which model to pick under Settings → Photo pick.
+```
+
+**Or click through yourself:**
+
+1. Create a [ModelScope SDK token](https://www.modelscope.cn/my/myaccesstoken).  
+2. **Settings → Models → Add custom provider**: Base URL `https://api-inference.modelscope.cn/v1/`, OpenAI-compatible protocol, your token, and a VL model id (e.g. `Qwen/Qwen2.5-VL-7B-Instruct`).  
+3. In `~/.dsh/settings.yaml`, set `input: [text, image]` on that model (custom models default to text-only). Details: [SETUP-VISION.en.md](SETUP-VISION.en.md).  
+4. **Settings → Photo pick**: enable scoring, select that vision model, save.
+
 ## Use
-
-### Vision model setup (once)
-
-Open **Settings → Photo pick**: enable vision scoring, pick a vision-capable model, save. Without that, scoring fails later.
 
 ### Switch mode and pick
 
