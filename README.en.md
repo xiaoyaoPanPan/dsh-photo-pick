@@ -42,26 +42,17 @@ Hard-refresh or restart `dsh web`.
 
 ### First time (once)
 
-1. Open `dsh web` and start a session on a **workspace that contains photos**.
-2. Switch the Agent Preset to **照片择优** (appears after the preset setup).
-3. Open **Settings → Photo pick**: enable vision scoring, pick a vision-capable model, save.
-
-Without a vision model, scoring will fail later.
+Open **Settings → Photo pick**: enable vision scoring, pick a vision-capable model, save. Without that, scoring fails later.
 
 ### Everyday ranking
 
-1. Keep the session on the **照片择优** preset.
-2. Click **照片择优** in the session header to open the workspace.
-3. Select photos on the right (Folders / All, sort as needed).
-4. Click **Next** → (optional) set this-batch criteria or quick chips → **Confirm to chat**.
-5. In the composer, press **Send** (paths—and criteria if any—are already filled).
-6. When `photo_pick_best` finishes, click **Compare** on the tool card to browse by score.
+1. **Mount a workspace with photos** (top-left folder, e.g. “我的照片”) and **start a new chat**.
+2. Open the mode dropdown next to it (default **标准模式**) and switch to **照片择优**.
+3. In the composer toolbar, click the **照片择优** button → the pick dialog opens.
+4. Select photos → **Next** (optional this-batch criteria) → **Confirm to chat** → Send.
+5. When the agent finishes, click **Compare** on the tool card.
 
-Notes:
-
-- This-batch criteria apply only once; long-term taste lives under Scoring standard (save there).
-- The header chip appears only on the **照片择优** preset; Settings stays available whenever the plugin is installed.
-- Optional: with a media library indexed, you can filter by tags; paths-only ranking works without it.
+Notes: the composer **照片择优** button appears only in **照片择优** mode. This-batch criteria apply once; long-term taste lives under Scoring standard in Settings.
 
 ## Uninstall
 
