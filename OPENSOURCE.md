@@ -2,6 +2,8 @@
 
 English | [中文](OPENSOURCE.zh.md)
 
+**Users:** start from the [README](README.md) (“Install in 10 seconds”) or [INSTALL.md](INSTALL.md).
+
 This repo is a multi-package dsh plugin monorepo. Consumers install only `dsh-photo-pick-app`.
 
 ```sh

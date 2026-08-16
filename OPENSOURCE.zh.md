@@ -2,6 +2,8 @@
 
 [English](OPENSOURCE.md) | 中文
 
+**普通用户：** 看 [README.zh.md](README.zh.md) 的「10 秒安装」，或直接打开 [INSTALL.zh.md](INSTALL.zh.md)。
+
 本仓是多包 dsh 插件 monorepo。对外只装 `dsh-photo-pick-app`。
 
 ```sh

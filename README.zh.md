@@ -2,83 +2,67 @@
 
 [English](README.md) | 中文
 
-DeepSeek Harness 插件：对近似照片打分并推荐更好的几张。对外只装 [`dsh-photo-pick-app`](dsh-photo-pick-app/README.md)。
+**从连拍里选出更好的那几张。** DeepSeek Harness（dsh）插件：用视觉给近似照片打分并推荐。
 
-| 包 | 职责 |
-|---|---|
-| [`dsh-photo-pick`](dsh-photo-pick/README.md) | `ctx.photoPick` Service Definition |
-| [`dsh-photo-pick-local`](dsh-photo-pick-local/README.md) | 本地 Provider（视觉打分；可选 mediaLibrary 检索取候选） |
-| [`dsh-photo-pick-ui`](dsh-photo-pick-ui/README.md) | Web 设置：开关打分 + 选择视觉模型 |
-| [`dsh-tool-photo-pick`](dsh-tool-photo-pick/README.md) | 模型工具 `photo_pick_best` |
-| [`dsh-photo-pick-app`](dsh-photo-pick-app/README.md) | 可安装组合包 + Agent Preset |
+## 10 秒安装（推荐）
 
-面向**官方原版** dsh / Web profile。软可选：若另装提供 `ctx.mediaLibrary` 的素材库插件，可用 `query` 取候选。
+把下面整段复制给 Cursor / ChatGPT / Claude / 你正在用的编程 AI：
 
-许可证：[MIT](LICENSE)。git / `prepare` 说明：[OPENSOURCE.zh.md](OPENSOURCE.zh.md)。
+```text
+请按这篇指南，把 dsh-photo-pick 安装到我本机的 DeepSeek Harness web profile，并完成验收：
+https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/INSTALL.zh.md
+装完后告诉我每一步是否成功。
+```
 
-## 作者
+就这样。AI 会处理 `plugin add`、`allowBuilds` 和 Agent Preset。
 
-维护者：[xiaoyaoPanPan](https://github.com/xiaoyaoPanPan)  
-问题反馈：[github.com/xiaoyaoPanPan/dsh-photo-pick/issues](https://github.com/xiaoyaoPanPan/dsh-photo-pick/issues)
+## 或自己动手
 
-## 安装（Web profile）
-
-需要已安装的 `dsh` CLI 与 `web` profile（[官方文档](https://deepseek-harness.github.io/deepseek-harness/develop/basic/publish)）。
+需要官方 `dsh`，且 `dsh web` 能跑。
 
 ```sh
 dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-从 git 安装会通过各包 `prepare` 从源码构建。pnpm ≥10 会拦截，直到你放行：第一次 `add` 失败并打印键名——写进 `~/.dsh/profiles/web/pnpm-workspace.yaml`，例如：
-
-```yaml
-allowBuilds:
-  dsh-photo-pick-app: true
-  dsh-photo-pick: true
-  dsh-photo-pick-local: true
-  dsh-photo-pick-ui: true
-  dsh-tool-photo-pick: true
-```
-
-再跑一次 `add`，然后装 Agent Preset：
+若 pnpm 拦截构建脚本：把报错里的 `allowBuilds` 键写进 `~/.dsh/profiles/web/pnpm-workspace.yaml`，再跑同一条命令。然后：
 
 ```sh
 pnpm --dir "${DSH_HOME:-$HOME/.dsh}/profiles/web" exec dsh-photo-pick-setup-preset
 ```
 
-PowerShell：
+Windows PowerShell：
 
 ```powershell
 pnpm --dir "$env:USERPROFILE\.dsh\profiles\web" exec dsh-photo-pick-setup-preset
 ```
 
-对外分享建议钉 commit：`github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app#<sha>`。
+硬刷新或重启 `dsh web`。
 
-### 本地检出（贡献者）
+## 怎么用
 
-```sh
-pnpm dsh plugin --profile web add "file:./dsh-photo-pick-app"
-pnpm --dir "${DSH_HOME:-$HOME/.dsh}/profiles/web" exec dsh-photo-pick-setup-preset
-```
+1. 打开含照片的工作区。
+2. 选择 Agent Preset **照片择优**。
+3. 打开会话顶栏 **照片择优** 工作区 → 选图 / 填要求 → 填入对话。
+4. 让 Agent 跑 `photo_pick_best`，再在工具卡片点 **对比查看**。
 
-务必使用 `file:`（裸相对路径常变成 pnpm `link:`，兄弟包进不了 profile）。
-
-## 安装后
-
-重启 `dsh web`，打开含连拍照片的工作区，选择 **照片择优** Agent Preset。
-
-打开会话顶栏 **照片择优** 工作区：左侧为操作 / **本组要求** / 打分模型 / 打分标准；右侧缩略图 + 预览；「确定并填入对话」后让 Agent 跑 `photo_pick_best`。完成后在工具卡片点 **对比查看**。
+可选：若另装了带 `ctx.mediaLibrary` 的素材库，可用 `query` 取候选；只选路径也能择优。
 
 ## 卸载
 
 ```sh
-prof="${DSH_HOME:-$HOME/.dsh}/profiles/web/package.json"
-grep -q '"dsh-photo-pick-app"' "$prof" 2>/dev/null && pnpm dsh plugin --profile web remove dsh-photo-pick-app
+dsh plugin --profile web remove dsh-photo-pick-app
 rm -rf "${DSH_HOME:-$HOME/.dsh}/.agent-presets/photo-pick"
 ```
 
-PowerShell：
+## 作者
 
-```powershell
-$pkg = "$env:USERPROFILE\.dsh\profiles\web\package.json"; if ((Test-Path $pkg) -and ((Get-Content $pkg -Raw) -match '"dsh-photo-pick-app"')) { pnpm dsh plugin --profile web remove dsh-photo-pick-app }; Remove-Item -Recurse -Force "$env:USERPROFILE\.dsh\.agent-presets\photo-pick" -ErrorAction SilentlyContinue
-```
+[xiaoyaoPanPan](https://github.com/xiaoyaoPanPan) · [Issues](https://github.com/xiaoyaoPanPan/dsh-photo-pick/issues) · [MIT](LICENSE)
+
+<details>
+<summary>给开发者</summary>
+
+- 包：`dsh-photo-pick` / `-local` / `-ui` / `dsh-tool-photo-pick` / `dsh-photo-pick-app`（对外只装 app）。
+- git/`prepare`：[OPENSOURCE.zh.md](OPENSOURCE.zh.md) · AI 安装步骤：[INSTALL.zh.md](INSTALL.zh.md)。
+- 本地：`dsh plugin --profile web add "file:./dsh-photo-pick-app"`，再跑 `dsh-photo-pick-setup-preset`。
+
+</details>
