@@ -101,5 +101,6 @@ Remove-Item -Recurse -Force "$env:USERPROFILE\.dsh\.agent-presets\photo-pick" -E
 ## Notes for the agent
 
 - Do **not** require the Gitee fork `deepseek-harness-xy`; this plugin targets official dsh.
+- Sibling packages already use `github:…#path:` cross-refs; if you still see `ERR_PNPM_LINKED_PKG_DIR_NOT_FOUND` / `file:../`, the install hit an old commit — confirm `main` is current.
 - Soft-optional: a media library providing `ctx.mediaLibrary` enables `query` candidate search; paths-only ranking works without it.
 - Tell the user the result of each step (ok / failed + the exact error).

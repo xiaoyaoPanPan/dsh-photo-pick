@@ -10,21 +10,10 @@
 dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-## 安装策略（方案 A）
+## 安装策略
 
-仓库**提交预构建的 `lib/`**。git 安装不现场跑 `tsdown`。
-
-各包 `prepare` 只检查入口存在，例如：
-
-```js
-node -e "require('node:fs').accessSync('lib/index.js')"
-```
-
-这样：
-
-- 不依赖 `tsdown` 等开发工具是否被装进消费者环境
-- 仍保留 `prepare`，以便 pnpm/npm 在解压后的 monorepo 里正确解析兄弟包的 `file:../…`
-- 缺 `lib/` 时立刻失败，方便发现漏交产物
+1. **预构建 `lib/`**：仓库提交可运行产物；`prepare` 只检查 `lib/index.js` 存在，不跑 `tsdown`。
+2. **兄弟依赖用 `github:…#path:`**：不要用 `file:../…`。pnpm 从 GitHub 装子目录时会把 `file:../` 错解析到用户 profile 目录（见 [pnpm#9141](https://github.com/pnpm/pnpm/issues/9141)）。
 
 pnpm ≥10 仍可能拦截 `prepare`。把第一次失败 `add` 打印的**整行键**写进 profile 的 `pnpm-workspace.yaml`（见 [INSTALL.md](INSTALL.md)），再跑 `add`，然后：
 
@@ -37,7 +26,7 @@ pnpm --dir "${DSH_HOME:-$HOME/.dsh}/profiles/web" exec dsh-photo-pick-setup-pres
 ## 维护者备注
 
 - 改 `src/` 后必须重建并**提交更新后的 `lib/`**（可用根目录 `build-all.ps1`）。
-- 兄弟包继续用 `file:../…`；不要改成互指 `github:…#path:…`（嵌套 git 依赖会再次踩坑）。
+- 兄弟包依赖保持 `github:xiaoyaoPanPan/dsh-photo-pick#path:<包目录>`；不要改回 `file:../…`。
 - `prepare` 保持「存在性检查」，不要改回 `tsdown --config tsdown.prepare.config.ts`。
-- `tsdown.prepare.config.ts` / `tsdown.client-standalone.ts` 可留作本地构建参考，但不是 git 安装路径。
+- 本地开发：克隆本仓后可用 `dsh plugin add "file:./dsh-photo-pick-app"`（路径相对 checkout 根）。
 - 对 `ctx.mediaLibrary` 仅软依赖，不要硬依赖 media 插件。

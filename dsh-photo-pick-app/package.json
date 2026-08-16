@@ -51,10 +51,10 @@
     "prepare": "node -e \"require('node:fs').accessSync('lib/index.js')\""
   },
   "dependencies": {
-    "dsh-photo-pick": "file:../dsh-photo-pick",
-    "dsh-photo-pick-local": "file:../dsh-photo-pick-local",
-    "dsh-photo-pick-ui": "file:../dsh-photo-pick-ui",
-    "dsh-tool-photo-pick": "file:../dsh-tool-photo-pick"
+    "dsh-photo-pick": "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick",
+    "dsh-photo-pick-local": "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-local",
+    "dsh-photo-pick-ui": "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-ui",
+    "dsh-tool-photo-pick": "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-tool-photo-pick"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "*",

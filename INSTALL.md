@@ -101,5 +101,6 @@ Remove-Item -Recurse -Force "$env:USERPROFILE\.dsh\.agent-presets\photo-pick" -E
 ## 给 Agent 的备注
 
 - **不要**要求用户先装 Gitee fork `deepseek-harness-xy`；本插件面向官方 dsh。
+- 兄弟包已用 `github:…#path:` 互指；若仍见 `ERR_PNPM_LINKED_PKG_DIR_NOT_FOUND` / `file:../`，说明装到了旧 commit，请确认拉的是最新 `main`。
 - 软可选：有提供 `ctx.mediaLibrary` 的素材库时可用 `query`；只传路径也能择优。
 - 每一步向用户汇报结果（成功 / 失败 + 原始报错）。

@@ -10,21 +10,10 @@ This repo is a multi-package dsh plugin monorepo. Consumers install only `dsh-ph
 dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-## Install strategy (option A)
+## Install strategy
 
-The repo **commits prebuilt `lib/`**. Git installs do not run `tsdown` on the consumer machine.
-
-Each package’s `prepare` only checks that the entry exists, for example:
-
-```js
-node -e "require('node:fs').accessSync('lib/index.js')"
-```
-
-That means:
-
-- No reliance on `tsdown` or other dev tools being installed for consumers
-- `prepare` stays present so pnpm/npm resolve sibling `file:../…` deps inside the extracted monorepo
-- A missing `lib/` fails immediately (catches forgotten artifact commits)
+1. **Prebuilt `lib/`**: commit runnable artifacts; `prepare` only checks that `lib/index.js` exists (no `tsdown` on the consumer machine).
+2. **Sibling deps use `github:…#path:`**: do not use `file:../…`. When pnpm installs a GitHub subpath package, it resolves `file:../` against the consumer profile directory ([pnpm#9141](https://github.com/pnpm/pnpm/issues/9141)).
 
 pnpm ≥10 may still block `prepare`. Paste the **exact key** from the first failed `add` into the profile `pnpm-workspace.yaml` (see [INSTALL.en.md](INSTALL.en.md)), re-run `add`, then:
 
@@ -37,7 +26,7 @@ Pin a commit when sharing: `github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-p
 ## Maintainer notes
 
 - After changing `src/`, rebuild and **commit the updated `lib/`** (root `build-all.ps1` works on Windows).
-- Keep sibling deps as `file:../…`; do not switch them to mutual `github:…#path:…` (nested git deps reintroduce the old failure mode).
+- Keep sibling deps as `github:xiaoyaoPanPan/dsh-photo-pick#path:<package-dir>`; do not revert to `file:../…`.
 - Keep `prepare` as an existence check; do not restore `tsdown --config tsdown.prepare.config.ts` for installs.
-- `tsdown.prepare.config.ts` / `tsdown.client-standalone.ts` may remain for local builds; they are not the git-install path.
+- Local development: after cloning this repo, `dsh plugin add "file:./dsh-photo-pick-app"` (path relative to the checkout root) still works.
 - Soft dependency on `ctx.mediaLibrary` only — do not hard-require a media plugin.

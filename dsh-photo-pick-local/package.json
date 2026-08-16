@@ -37,7 +37,7 @@
     "prepare": "node -e \"require('node:fs').accessSync('lib/index.js')\""
   },
   "dependencies": {
-    "dsh-photo-pick": "file:../dsh-photo-pick",
+    "dsh-photo-pick": "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick",
     "sharp": "^0.35.3"
   },
   "peerDependencies": {
@@ -59,7 +59,7 @@
     "@deepseek-ai/dsh-native-command": "*",
     "@deepseek-ai/dsh-settings": "*",
     "@deepseek-ai/schemastery": "*",
-    "dsh-photo-pick": "file:../dsh-photo-pick",
+    "dsh-photo-pick": "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick",
     "sharp": "^0.35.3",
     "vitest": "^3.2.4",
     "tsdown": "^0.22.2"
