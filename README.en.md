@@ -4,8 +4,6 @@
   <p align="center">
     <a href="./README.md">中文</a> ·
     <a href="./README.en.md">English</a> ·
-    <a href="./INSTALL.en.md">AI install</a> ·
-    <a href="./SETUP-VISION.en.md">AI vision setup</a> ·
     <a href="https://github.com/xiaoyaoPanPan/dsh-photo-pick/issues">Issues</a>
   </p>
   <p align="center">
@@ -17,21 +15,30 @@
   </p>
 </p>
 
-## Install in 10 seconds (recommended)
+Copy a prompt below to Cursor / ChatGPT / Claude / DeepSeek Harness / your coding agent.
 
-Copy this prompt to Cursor / ChatGPT / Claude / DeepSeek Harness / your coding agent:
+## 1) Install in 10 seconds
 
 ```text
-Install and configure dsh-photo-pick for my DeepSeek Harness web profile by following
-https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/INSTALL.en.md
-Then run the verification steps and tell me the result.
+Follow https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/INSTALL.en.md
+to install dsh-photo-pick into my DeepSeek Harness web profile. Report each step.
 ```
 
-That’s it. The agent handles `plugin add`, `allowBuilds`, and the Agent Preset.
+## 2) Configure vision scoring
+
+Scoring needs a look-at-images model. Paste:
+
+```text
+Configure dsh-photo-pick vision scoring:
+1. With dsh web running, GET /api/photo-pick/settings and find a model with supportsVision=true
+2. If found, PUT the same endpoint with visionEnabled=true and that visionLlmProvider / visionModel
+3. If none: walk me through https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/SETUP-VISION.en.md to add a VL model, then repeat 1–2
+Tell me which model you selected.
+```
 
 ## Or install yourself
 
-Needs official `dsh` and a `web` profile (`dsh web` works).
+Needs official `dsh` and a working `dsh web` profile.
 
 ```sh
 dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
@@ -49,29 +56,7 @@ Windows PowerShell:
 pnpm --dir "$env:USERPROFILE\.dsh\profiles\web" exec dsh-photo-pick-setup-preset
 ```
 
-Hard-refresh or restart `dsh web`.
-
-## Configure a vision model (ModelScope recommended)
-
-Scoring needs a **vision / VL** model. Stock DeepSeek chat routes are usually **text-only** and cannot score photos.
-
-We recommend [ModelScope](https://www.modelscope.cn/) free OpenAI-compatible APIs (daily quota after signup; check their site). A light starter: `Qwen/Qwen2.5-VL-7B-Instruct` (must show API inference on their site).
-
-**Fastest: paste this to your coding agent:**
-
-```text
-Follow this guide to configure a free ModelScope vision model in DeepSeek Harness for dsh-photo-pick:
-https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/SETUP-VISION.en.md
-Ask me for the token when needed; never write secrets into public files.
-When done, tell me each step’s result and which model to pick under Settings → Photo pick.
-```
-
-**Or click through yourself:**
-
-1. Create a [ModelScope SDK token](https://www.modelscope.cn/my/myaccesstoken).  
-2. **Settings → Models → Add custom provider**: Base URL `https://api-inference.modelscope.cn/v1/`, OpenAI-compatible protocol, your token, and a VL model id (e.g. `Qwen/Qwen2.5-VL-7B-Instruct`).  
-3. In `~/.dsh/settings.yaml`, set `input: [text, image]` on that model (custom models default to text-only). Details: [SETUP-VISION.en.md](SETUP-VISION.en.md).  
-4. **Settings → Photo pick**: enable scoring, select that vision model, save.
+Hard-refresh or restart `dsh web`. For vision scoring, prefer step 2 above, or open **Settings → Photo pick** yourself.
 
 ## Use
 
@@ -105,8 +90,8 @@ rm -rf "${DSH_HOME:-$HOME/.dsh}/.agent-presets/photo-pick"
 <details>
 <summary>For developers</summary>
 
-- Packages: `dsh-photo-pick` / `-local` / `-ui` / `dsh-tool-photo-pick` / `dsh-photo-pick-app` (install only the app).
-- Git/`prepare` notes: [OPENSOURCE.md](OPENSOURCE.md) · AI install: [INSTALL.md](INSTALL.md) (中文) / [INSTALL.en.md](INSTALL.en.md).
-- Local checkout: `dsh plugin --profile web add "file:./dsh-photo-pick-app"` then run `dsh-photo-pick-setup-preset`.
+- Packages: `dsh-photo-pick` / `-local` / `-ui` / `dsh-tool-photo-pick` / `dsh-photo-pick-app` (consumers install app only).
+- git/`prepare`: [OPENSOURCE.en.md](OPENSOURCE.en.md) · AI install: [INSTALL.en.md](INSTALL.en.md) · AI vision: [SETUP-VISION.en.md](SETUP-VISION.en.md).
+- Local: `dsh plugin --profile web add "file:./dsh-photo-pick-app"`, then `dsh-photo-pick-setup-preset`.
 
 </details>

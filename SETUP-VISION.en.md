@@ -1,50 +1,55 @@
-# Vision model setup (for AI / users)
+# Vision model setup (for AI)
 
 [中文](SETUP-VISION.md) | English
 
-Configure a **vision-capable** model in DeepSeek Harness (dsh) for `dsh-photo-pick` scoring.  
-We recommend [ModelScope](https://www.modelscope.cn/) free OpenAI-compatible inference (daily quota after signup; check their site).
+Prefer **auto-enable + auto-select** an existing vision model. Only if none exist, walk the user through adding one.
 
-## Goal
+## Preferred path: existing VL model → wire it up
 
-1. Add a ModelScope custom provider + VL model under **Settings → Models**  
-2. Declare image modality in `$DSH_HOME/settings.yaml` (`input: [text, image]`)  
-3. Enable scoring and select that model under **Settings → Photo pick**
+Requires the plugin installed and `dsh web` running.
 
-## Prepare
+1. `GET` `http://127.0.0.1:<web-port>/api/photo-pick/settings`  
+   (port from the user’s `dsh web` logs).
+2. In `models`, find an entry with `supportsVision: true`.
+3. If found, `PUT` (or `POST`) the same path:
 
-1. Create an SDK Token at [ModelScope access tokens](https://www.modelscope.cn/my/myaccesstoken) (`ms-…`).  
-2. Pick a **VL / multimodal** chat model that offers **API inference**. Starter example: `Qwen/Qwen2.5-VL-7B-Instruct` (verify on the site).  
-3. Note base URL, model id, and token.
-
-Recommended OpenAI-compatible endpoint:
-
-```text
-https://api-inference.modelscope.cn/v1/
+```json
+{
+  "visionEnabled": true,
+  "visionLlmProvider": "<provider>",
+  "visionModel": "<id>"
+}
 ```
 
-## Step A — Custom provider in the Web UI
+This is the same as enabling **Enable vision scoring** and selecting that model under **Settings → Photo pick**.
 
-1. Open `dsh web` → **Settings → Models**.  
-2. **Add a custom provider**.  
-3. Suggested fields:
+4. `GET` again to confirm, then tell the user which model was selected.
 
-| Field | Suggested value |
-|------|-----------------|
-| Provider ID | `modelscope` (lowercase, permanent) |
-| Display name | `ModelScope` |
-| API protocol | openai-completions (or equivalent) |
+## No vision model: help add one (ModelScope free tier OK)
+
+Stock DeepSeek chat routes are usually **text-only**. Recommend [ModelScope](https://www.modelscope.cn/) free OpenAI-compatible APIs (quota per their site).
+
+Ask the user to prepare:
+
+1. An [SDK token](https://www.modelscope.cn/my/myaccesstoken) (`ms-…`) — paste only in local Settings; never into public chat.
+2. A VL model with **API inference**, starter example: `Qwen/Qwen2.5-VL-7B-Instruct` (verify on site).
+3. Base URL: `https://api-inference.modelscope.cn/v1/`
+
+### A. Add custom provider
+
+**Settings → Models → Add custom provider**:
+
+| Field | Suggested |
+|-------|-----------|
+| Provider ID | `modelscope` |
+| API protocol | OpenAI Completions (or UI equivalent) |
 | Base URL | `https://api-inference.modelscope.cn/v1/` |
-| API key | your `ms-…` token |
-| Models | at least one VL id, e.g. `Qwen/Qwen2.5-VL-7B-Instruct` |
+| API key | user’s `ms-…` |
+| Model | e.g. `Qwen/Qwen2.5-VL-7B-Instruct` |
 
-4. Save. If model discovery fails, enter the model id manually.
+### B. Declare image input (required)
 
-## Step B — Declare image input (required)
-
-Manually added custom models are treated as **text-only** until you assert modalities. Without this, image requests are rejected before send.
-
-Edit `$DSH_HOME/settings.yaml` (Windows: `%USERPROFILE%\.dsh\settings.yaml`):
+Custom models default to text-only. Edit `$DSH_HOME/settings.yaml` (Windows: `%USERPROFILE%\.dsh\settings.yaml`):
 
 ```yaml
 llm-pi-ai:
@@ -52,30 +57,25 @@ llm-pi-ai:
     modelscope:
       api: openai-completions
       baseURL: https://api-inference.modelscope.cn/v1/
-      # Keep credentials as your local saved reference — do not paste tokens into public chats
       models:
         - id: Qwen/Qwen2.5-VL-7B-Instruct
           input: [text, image]
 ```
 
-Or set `defaultInput: [text, image]` on that provider if every model there is vision.
+Or set `defaultInput: [text, image]` on that provider. Save and start a new session.  
+Docs: [Providers · image input](https://deepseek-harness.github.io/deepseek-harness/guide/providers/).
 
-Start a **new session** after saving. Official docs: [Configure models · Image input](https://deepseek-harness.github.io/deepseek-harness/en/guide/providers/).
+### C. Repeat the preferred path
 
-## Step C — Wire photo-pick
-
-1. **Settings → Photo pick**  
-2. Enable vision scoring  
-3. Select the ModelScope VL model  
-4. Save  
+`GET /api/photo-pick/settings` again, then `PUT` to enable and select.  
+UI alternative: **Settings → Photo pick** → enable scoring → pick a vision-marked model → save.
 
 ## Verify
 
-Run one photo-pick job on a small image. If you see text-only / no-image errors, revisit Step B.
+Run a small photo-pick job. If “text-only / rejects images”, fix step B.
 
-## Notes for agents
+## Agent notes
 
-- Never ask users to paste `ms-…` tokens into public issues/chats.  
-- Stock DeepSeek chat-completions routes are text-only; use a real VL endpoint for scoring.  
-- Free quotas and model availability change; swap to another VL model with API inference if needed.  
-- Report each step’s success/failure with the raw error.
+- Auto-wire when possible; only guide adding a provider when no VL model exists.
+- Never write tokens into the repo or public chat.
+- Example model ids may rotate; pick any VL that still offers API inference.
