@@ -1,0 +1,70 @@
+{
+  "name": "dsh-photo-pick-app",
+  "description": "Installable dsh profile bundle: photo-pick (ctx.photoPick) plus a shippable photo-pick agent preset",
+  "version": "0.1.0-rc.5",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "bin": {
+    "dsh-photo-pick-setup-preset": "./lib/bin.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./invariant": {
+      "types": "./lib/types/invariant.d.ts",
+      "default": "./lib/invariant.js"
+    },
+    "./bin": {
+      "types": "./lib/types/bin.d.ts",
+      "default": "./lib/bin.js"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/invariant.js",
+    "lib/bin.js",
+    "cordis.patch.yml",
+    "agent-presets/**",
+    "lib/types/**/*.d.ts",
+    "README.md",
+    "README.zh.md"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaoyaoPanPan/dsh-photo-pick.git",
+    "directory": "dsh-photo-pick-app"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b && tsdown",
+    "prepare": "tsdown --config tsdown.prepare.config.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "dsh-photo-pick": "file:../dsh-photo-pick",
+    "dsh-photo-pick-local": "file:../dsh-photo-pick-local",
+    "dsh-photo-pick-ui": "file:../dsh-photo-pick-ui",
+    "dsh-tool-photo-pick": "file:../dsh-tool-photo-pick"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "*",
+    "@deepseek-ai/dsh-invariants": "*"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "*",
+    "@deepseek-ai/dsh-invariants": "*",
+    "js-yaml": "^4.1.0",
+    "tsdown": "^0.22.2",
+    "vitest": "^3.2.4"
+  }
+}

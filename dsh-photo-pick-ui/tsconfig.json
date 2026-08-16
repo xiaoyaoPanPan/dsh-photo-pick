@@ -1,0 +1,47 @@
+{
+  "extends": "../../../../tsconfig.base.client.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib/types",
+    "paths": {
+      "react": ["../../../../node_modules/@types/react/index.d.ts"],
+      "react/jsx-runtime": ["../../../../node_modules/@types/react/jsx-runtime.d.ts"],
+      "react-dom": ["../../../../packages/client/ui-primitives/node_modules/@types/react-dom/index.d.ts"]
+    }
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../../../../vendor/cordis"
+    },
+    {
+      "path": "../../../../packages/client/ui-slots"
+    },
+    {
+      "path": "../../../../packages/client/runtime"
+    },
+    {
+      "path": "../../../../packages/client/ui-primitives"
+    },
+    {
+      "path": "../../../../packages/client/web-react"
+    },
+    {
+      "path": "../../../../packages/client/ui-settings"
+    },
+    {
+      "path": "../../../../packages/client/ui-conversation"
+    },
+    {
+      "path": "../../../../packages/client/ui-tool"
+    },
+    {
+      "path": "../../../../packages/client/locale"
+    },
+    {
+      "path": "../../../../packages/runtime-diagnostics/invariants"
+    }
+  ]
+}

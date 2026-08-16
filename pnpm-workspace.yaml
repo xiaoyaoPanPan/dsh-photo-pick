@@ -1,0 +1,8 @@
+# Used when this feature directory is the root of a standalone git repo.
+# While nested under the harness fork, install via file:…/dsh-photo-pick-app instead.
+packages:
+  - 'dsh-photo-pick'
+  - 'dsh-photo-pick-local'
+  - 'dsh-photo-pick-ui'
+  - 'dsh-tool-photo-pick'
+  - 'dsh-photo-pick-app'

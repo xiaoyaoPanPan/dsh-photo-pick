@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write xy-dev/plugins/photo-pick/dsh-photo-pick-ui/README.md
+README.md: 7b0e0af5141254d7e1bb40832ad2f106fbbbf52d
+README.zh.md: 91b47dbde9e52c24414d4bb3250f8ade70ead784

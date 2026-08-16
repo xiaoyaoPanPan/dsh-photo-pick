@@ -1,0 +1,42 @@
+{
+  "extends": "../../../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib/types"
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../../../../vendor/cosmokit"
+    },
+    {
+      "path": "../../../../vendor/cordis"
+    },
+    {
+      "path": "../../../../vendor/schemastery"
+    },
+    {
+      "path": "../dsh-photo-pick"
+    },
+    {
+      "path": "../../../../packages/settings/settings"
+    },
+    {
+      "path": "../../../../packages/host/webserver"
+    },
+    {
+      "path": "../../../../packages/runtime-diagnostics/invariants"
+    },
+    {
+      "path": "../../../../packages/llm/llm"
+    },
+    {
+      "path": "../../../../packages/attachment/attachment"
+    },
+    {
+      "path": "../../../../packages/util/native-command"
+    }
+  ]
+}

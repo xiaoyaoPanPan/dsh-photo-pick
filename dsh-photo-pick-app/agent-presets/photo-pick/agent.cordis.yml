@@ -1,0 +1,56 @@
+# The `photo-pick` agent preset: rank similar photos and recommend the best.
+#
+# Host composition mounts `dsh-photo-pick-local` (ctx.photoPick) after the
+# photo-pick-app bundle patch is layered into the profile.
+# Browse/score config uses the Photo pick session-header workspace (not media's
+# Image & video scan). When media is installed, photo_pick_best may use `query`.
+# Default coding presets do NOT include these tools.
+
+- id: persona
+  name: '@deepseek-ai/dsh-persona'
+  config:
+    text: >-
+      You are a photo-pick agent powered by the {{model}} model.
+      Your working directory {{cwd}} is a mounted workspace with photo bursts.
+      Configure scoring from the session-header Photo pick workspace (model + choose photos).
+      When ranking, call photo_pick_best with the paths the user selected or named.
+      If the user message includes a Criteria / 择优要求 line, pass that text unchanged as the
+      criteria argument (do not rewrite it). Per-batch criteria override only that pick;
+      long-term scoring standard is configured in the Photo pick workspace.
+      Do not call read_image to compare candidates; scoring uses the photo-pick vision model.
+      Report ranked paths with scores, reasons, and flaws briefly — the Web tool card already
+      shows ranked thumbnails. Prefer top picks unless the user asks for the full ranking.
+      After photo_pick_best, tell the user to use the thumbnails or Compare on the tool card;
+      do not launch OS photo viewers via shell.
+
+- id: agent-instructions
+  name: '@deepseek-ai/dsh-agent-instructions'
+  config:
+    maxBytes: 65536
+
+- id: tool-photo-pick
+  name: 'dsh-tool-photo-pick'
+
+# Keep lightweight FS discovery for listing burst folders before pick.
+- id: tool-fs
+  name: '@deepseek-ai/dsh-tool-fs'
+  config:
+    enableReadImage: false
+
+- id: tool-fs-search
+  name: '@deepseek-ai/dsh-tool-fs-search'
+  config:
+    sampleOverCapGlobResults: false
+
+- id: tool-bash
+  name: '@deepseek-ai/dsh-tool-bash'
+  disabled: !!js process.platform === 'win32'
+
+- id: tool-pwsh
+  name: '@deepseek-ai/dsh-tool-pwsh'
+  disabled: !!js process.platform !== 'win32'
+
+- id: tool-todo
+  name: '@deepseek-ai/dsh-tool-todo'
+  config:
+    allowParallelInProgress: false

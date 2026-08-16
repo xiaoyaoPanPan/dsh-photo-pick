@@ -1,0 +1,28 @@
+# Installable photo-pick profile bundle.
+#
+# Inserts Host `ctx.photoPick` (local provider) and the Web settings UI
+# (`dsh-photo-pick-ui`). Model-facing tools live in the shipped
+# `agent-presets/photo-pick/` directory — copy it into
+# `$DSH_HOME/.agent-presets/photo-pick` (or run `pnpm exec dsh-photo-pick-setup-preset`).
+#
+# Vision scoring reuses a model from Settings → Models (`visionLlmProvider` +
+# `visionModel`); pick it on Settings → 照片择优 while a photo-pick preset
+# session is active. Optional candidate search uses `ctx.mediaLibrary` when the
+# media plugin is also installed.
+
+- insert:
+    - id: photo-pick
+      name: 'dsh-photo-pick-local'
+      config:
+        visionEnabled: true
+        visionLlmProvider: ''
+        visionModel: ''
+        visionScorePrompt: ''
+        maxVisionBytes: 5242880
+        visionMaxEdgePx: 2048
+        visionMinIntervalMs: 2000
+        visionMaxRetries: 4
+        visionRetryBackoffMs: 2000
+        visionConcurrency: 1
+    - id: photo-pick-ui
+      name: 'dsh-photo-pick-ui'
