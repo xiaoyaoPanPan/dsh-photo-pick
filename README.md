@@ -15,25 +15,17 @@
   </p>
 </p>
 
-复制下面提示词，发给 Cursor / ChatGPT / Claude / DeepSeek Harness 等你正在用的 AI 即可。
+## 10 秒安装
 
-## 1）10 秒安装
+复制下面提示词，发给 Cursor / ChatGPT / Claude / DeepSeek Harness 等你正在用的 AI：
 
 ```text
 请按 https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/INSTALL.md
-把 dsh-photo-pick 装进本机 DeepSeek Harness 的 web profile，装完汇报每步结果。
-```
-
-## 2）配置视觉模型
-
-打分需要能看图的模型。复制这段：
-
-```text
-帮我配置 dsh-photo-pick 视觉打分：
-1. 确认 dsh web 已开，GET /api/photo-pick/settings，找出 supportsVision=true 的模型
-2. 有则 PUT 同接口：visionEnabled=true，并写入 visionLlmProvider / visionModel（勾上启用、自动选中）
-3. 没有看图模型：按 https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/SETUP-VISION.md 教我加一个，加完再做 1–2
-完成后告诉我选了哪个模型。
+把 dsh-photo-pick 装进本机 DeepSeek Harness 的 web profile。
+装完后：确认 dsh web 已开，GET /api/photo-pick/settings，检查是否已有 supportsVision=true 的模型，并告诉我结果。
+- 若有：先问我要不要接到「照片择优」；我同意后再 PUT 同接口：visionEnabled=true，并写入对应 visionLlmProvider / visionModel。
+- 若无：按 https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/SETUP-VISION.md 教我怎么加一个能看图的自定义模型（不要替我选定某一家平台），加完再问我是否接通。
+全程汇报每步结果。
 ```
 
 ## 或自己动手安装
@@ -56,11 +48,11 @@ Windows PowerShell：
 pnpm --dir "$env:USERPROFILE\.dsh\profiles\web" exec dsh-photo-pick-setup-preset
 ```
 
-硬刷新或重启 `dsh web`。视觉模型仍建议用上面第 2 步提示词，或自己打开 **设置 → 照片择优**。
+硬刷新或重启 `dsh web`。打分模型可在 **设置 → 照片择优** 勾选并选择；细节见 [SETUP-VISION.md](SETUP-VISION.md)。
 
 ## 怎么用
 
-### 切换模式使用
+### 新对话中选择照片择优模式
 
 1. **挂载有照片的工作区**（左上角目录），并**新建对话**。
 2. 点对话框上方的模式下拉（默认「标准模式」），换成 **照片择优**。

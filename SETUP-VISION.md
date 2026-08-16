@@ -2,16 +2,16 @@
 
 中文 | [English](SETUP-VISION.en.md)
 
-优先**自动勾选并选中**已有看图模型；只有本机没有视觉模型时，再教用户加一个。
+打分需要一个**能看图**的模型（`supportsVision` / `input` 含 `image`）。  
+先查本机是否已有；有则**先问用户**是否接到照片择优，同意后再写入。没有再教怎么加自定义看图模型。
 
-## 优先路径：已有视觉模型 → 自动接通
+## 已有视觉模型 → 询问后接通
 
-前提：插件已装好，`dsh web` 在跑。
+前提：插件已装，`dsh web` 在跑。
 
-1. `GET` 本机 `http://127.0.0.1:<web端口>/api/photo-pick/settings`  
-   （端口以用户实际 `dsh web` 为准，常见在启动日志里。）
-2. 在返回的 `models` 里找 `supportsVision: true` 的项。
-3. 若找到，`PUT`（或 `POST`）同一路径，JSON 例如：
+1. `GET` `http://127.0.0.1:<web端口>/api/photo-pick/settings`（端口见启动日志）。
+2. 在 `models` 里找 `supportsVision: true`，把名单报给用户。
+3. **先问**要不要接到「照片择优」。用户同意后，再 `PUT`/`POST` 同一路径：
 
 ```json
 {
@@ -21,62 +21,47 @@
 }
 ```
 
-这等同于在 **设置 → 照片择优** 勾上「启用视觉打分」并选中该模型。
+等同于 **设置 → 照片择优** 勾「启用视觉打分」并选中该模型。
 
-4. 再 `GET` 一次确认：`visionEnabled` 为 true，且 provider/model 已写入。向用户汇报选中了哪个。
+4. 再 `GET` 确认后汇报。
 
-## 没有视觉模型时：教用户加一个（推荐魔搭免费）
+## 没有视觉模型 → 教用户加自定义看图端点
 
-DeepSeek 官方聊天路由通常是**纯文本**，不能打分。可推荐 [魔搭 ModelScope](https://www.modelscope.cn/) 免费 OpenAI 兼容 API（额度以官网为准）。
+DeepSeek 官方聊天路由通常是纯文本，不能打分。需要用户在 **设置 → 模型** 里加一个**支持图片输入**的自定义提供方（任意 OpenAI 兼容 / 其它 dsh 支持的协议均可；由用户自己选平台与密钥）。
 
-请用户准备：
+通用步骤：
 
-1. [SDK Token](https://www.modelscope.cn/my/myaccesstoken)（`ms-…`）——**只在本机设置里粘贴，不要写进公开聊天。**
-2. 选一个带 **API 推理** 的 VL 模型，起步示例：`Qwen/Qwen2.5-VL-7B-Instruct`（以页面可用为准）。
-3. Base URL：`https://api-inference.modelscope.cn/v1/`
-
-### A. 添加自定义提供方
-
-**设置 → 模型 → 添加自定义提供方**：
-
-| 字段 | 建议 |
-|------|------|
-| Provider ID | `modelscope` |
-| API 协议 | OpenAI Completions（或界面等价项） |
-| Base URL | `https://api-inference.modelscope.cn/v1/` |
-| API 密钥 | 用户的 `ms-…` |
-| 模型 | 如 `Qwen/Qwen2.5-VL-7B-Instruct` |
-
-### B. 声明能看图（必做）
-
-自定义模型默认当纯文本。编辑 `$DSH_HOME/settings.yaml`（Windows：`%USERPROFILE%\.dsh\settings.yaml`）：
+1. **设置 → 模型 → 添加自定义提供方**：填 Base URL、协议、API 密钥、模型 id（以该平台文档为准）。
+2. 自定义模型默认当纯文本。在 `$DSH_HOME/settings.yaml`（Windows：`%USERPROFILE%\.dsh\settings.yaml`）给该模型声明图片输入，例如：
 
 ```yaml
 llm-pi-ai:
   providers:
-    modelscope:
+    <你的提供方 id>:
       api: openai-completions
-      baseURL: https://api-inference.modelscope.cn/v1/
+      baseURL: <你的 Base URL>
       models:
-        - id: Qwen/Qwen2.5-VL-7B-Instruct
+        - id: <模型 id>
           input: [text, image]
 ```
 
 或对该提供方设 `defaultInput: [text, image]`。保存后新开会话。  
 官方说明：[配置模型 · 图片输入](https://deepseek-harness.github.io/deepseek-harness/guide/providers/)。
 
-### C. 再跑「优先路径」
+3. 再 `GET /api/photo-pick/settings`，确认出现 `supportsVision: true`，**再问**用户是否接通，同意后再 `PUT`。
 
-加完后重新 `GET /api/photo-pick/settings`，应能看到 `supportsVision: true`，再 `PUT` 勾选并选中。
+也可让用户在界面操作：**设置 → 照片择优** → 勾选 → 选模型 → 保存。
 
-若用户更习惯点界面：**设置 → 照片择优** → 勾「启用视觉打分」→ 选标「视觉」的模型 → 保存。
+### 可选示例（非推荐、非绑定）
+
+若用户问「有没有免费试用的 OpenAI 兼容看图 API」，可顺带提一句 [ModelScope](https://www.modelscope.cn/) 等第三方推理（Token、模型 id、Base URL 以对方官网为准），**不要当成唯一或默认方案**，也不要替用户注册或索取密钥写入公开处。
 
 ## 验收
 
-用一张小图走「照片择优」；若报不接受图片 / text-only，检查步骤 B 的 `input: [text, image]`。
+小图跑一遍「照片择优」。若报不接受图片 / text-only，检查 `input: [text, image]`。
 
 ## 给 Agent 的备注
 
-- 能自动接通就不要让用户手点；没有视觉模型再逐步指导加提供方。
-- 不要索取或落盘用户 Token 到仓库/公开处。
-- 示例模型 id 以魔搭当前页面为准；不可用就换其它仍带 API 推理的 VL。
+- 有视觉模型时：**询问后再写配置**，不要擅自勾选。
+- 没有时：讲清「自定义提供方 + 声明 image」，让用户自选平台。
+- 密钥只留本机设置；不要写进仓库或公开聊天。

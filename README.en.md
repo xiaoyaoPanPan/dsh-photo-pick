@@ -15,25 +15,17 @@
   </p>
 </p>
 
-Copy a prompt below to Cursor / ChatGPT / Claude / DeepSeek Harness / your coding agent.
+## Install in 10 seconds
 
-## 1) Install in 10 seconds
+Copy this prompt to Cursor / ChatGPT / Claude / DeepSeek Harness / your coding agent:
 
 ```text
 Follow https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/INSTALL.en.md
-to install dsh-photo-pick into my DeepSeek Harness web profile. Report each step.
-```
-
-## 2) Configure vision scoring
-
-Scoring needs a look-at-images model. Paste:
-
-```text
-Configure dsh-photo-pick vision scoring:
-1. With dsh web running, GET /api/photo-pick/settings and find a model with supportsVision=true
-2. If found, PUT the same endpoint with visionEnabled=true and that visionLlmProvider / visionModel
-3. If none: walk me through https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/SETUP-VISION.en.md to add a VL model, then repeat 1–2
-Tell me which model you selected.
+to install dsh-photo-pick into my DeepSeek Harness web profile.
+After install: with dsh web running, GET /api/photo-pick/settings, check for any model with supportsVision=true, and report what you found.
+- If yes: ask me whether to wire it into Photo pick; only if I agree, PUT the same endpoint with visionEnabled=true and that visionLlmProvider / visionModel.
+- If no: walk me through https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/SETUP-VISION.en.md to add a vision-capable custom model (do not push a specific vendor), then ask again whether to wire it up.
+Report each step.
 ```
 
 ## Or install yourself
@@ -56,7 +48,7 @@ Windows PowerShell:
 pnpm --dir "$env:USERPROFILE\.dsh\profiles\web" exec dsh-photo-pick-setup-preset
 ```
 
-Hard-refresh or restart `dsh web`. For vision scoring, prefer step 2 above, or open **Settings → Photo pick** yourself.
+Hard-refresh or restart `dsh web`. For scoring, use **Settings → Photo pick**, or see [SETUP-VISION.en.md](SETUP-VISION.en.md).
 
 ## Use
 
