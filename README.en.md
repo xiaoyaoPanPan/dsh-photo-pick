@@ -40,12 +40,28 @@ Hard-refresh or restart `dsh web`.
 
 ## Use
 
-1. Open a workspace with photos.
-2. Select Agent Preset **照片择优**.
-3. Open the session-header **照片择优** workspace → pick photos / criteria → Confirm to chat.
-4. Ask the agent to run `photo_pick_best`, then open **Compare** on the tool card.
+### First time (once)
 
-Optional: if you also have a media-library plugin with `ctx.mediaLibrary`, you can gather candidates via `query`. Paths-only ranking works without it.
+1. Open `dsh web` and start a session on a **workspace that contains photos**.
+2. Switch the Agent Preset to **照片择优** (appears after the preset setup).
+3. Open **Settings → Photo pick**: enable vision scoring, pick a vision-capable model, save.
+
+Without a vision model, scoring will fail later.
+
+### Everyday ranking
+
+1. Keep the session on the **照片择优** preset.
+2. Click **照片择优** in the session header to open the workspace.
+3. Select photos on the right (Folders / All, sort as needed).
+4. Click **Next** → (optional) set this-batch criteria or quick chips → **Confirm to chat**.
+5. In the composer, press **Send** (paths—and criteria if any—are already filled).
+6. When `photo_pick_best` finishes, click **Compare** on the tool card to browse by score.
+
+Notes:
+
+- This-batch criteria apply only once; long-term taste lives under Scoring standard (save there).
+- The header chip appears only on the **照片择优** preset; Settings stays available whenever the plugin is installed.
+- Optional: with a media library indexed, you can filter by tags; paths-only ranking works without it.
 
 ## Uninstall
 
