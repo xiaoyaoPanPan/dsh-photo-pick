@@ -15,40 +15,84 @@
   </p>
 </p>
 
-## 10 秒安装
+## 10 秒安装（推荐：交给 AI）
 
 复制下面提示词，发给 Cursor / ChatGPT / Claude / DeepSeek Harness 等你正在用的 AI：
 
 ```text
-请按 https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/INSTALL.md
+请严格按 https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/INSTALL.md
 把 dsh-photo-pick 装进本机 DeepSeek Harness 的 web profile。
+
+硬性顺序（缺一步会失败）：
+1) 先确认当前 dsh web 实际使用的 home（环境变量 DSH_HOME，或默认 ~/.dsh / %USERPROFILE%\.dsh），再改对应 profiles/web/pnpm-workspace.yaml：写入 blockExoticSubdeps: false（不要删已有键）。
+2) 再执行：dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
+3) 若报 allowBuilds / ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED：把 pnpm 打印的整行键写入同一 pnpm-workspace.yaml，再重跑同一条 add。不要改插件源码。
+4) 再执行：pnpm --dir "<上面那个 home>/profiles/web" exec dsh-photo-pick-setup-preset
+5) 硬刷新或重启 dsh web，汇报每步成功/失败与原始报错。
+
 装完后：确认 dsh web 已开，GET /api/photo-pick/settings，检查是否已有 supportsVision=true 的模型，并告诉我结果。
 - 若有：先问我要不要接到「照片择优」；我同意后再 PUT 同接口：visionEnabled=true，并写入对应 visionLlmProvider / visionModel。
 - 若无：按 https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/SETUP-VISION.md 教我怎么加一个能看图的自定义模型（不要替我选定某一家平台），加完再问我是否接通。
-全程汇报每步结果。
 ```
+
+更细的逐步说明见 [INSTALL.md](INSTALL.md)。
 
 ## 或自己动手安装
 
-需要官方 `dsh`，且 `dsh web` 能跑。
+需要：官方 `dsh`、`pnpm`、已能打开的 `dsh web`。
+
+**顺序不能反。** 先改配置，再 `add`。
+
+### 1）放开 git 传递依赖（pnpm 11 必需）
+
+打开 web profile 的 `pnpm-workspace.yaml`：
+
+- 默认：`~/.dsh/profiles/web/pnpm-workspace.yaml`（Windows：`%USERPROFILE%\.dsh\profiles\web\pnpm-workspace.yaml`）
+- 若启动时设置了 `DSH_HOME`：用 `$DSH_HOME/profiles/web/pnpm-workspace.yaml`
+
+合并写入（保留原有内容）：
+
+```yaml
+blockExoticSubdeps: false
+```
+
+不写这一步，常见报错：`ERR_PNPM_EXOTIC_SUBDEP`。
+
+### 2）添加插件
 
 ```sh
 dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-pnpm 11：先在 `~/.dsh/profiles/web/pnpm-workspace.yaml`（或 `$DSH_HOME/profiles/web/…`）写入 `blockExoticSubdeps: false`，再跑上面的 `add`。若还提示 `allowBuilds`，把报错里的键补上再重跑。然后：
+PATH 里没有 `dsh` 时：
+
+```sh
+npx -y --package @deepseek-ai/dsh dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
+```
+
+若报 `allowBuilds`：把 pnpm 打印的**整行键**写进同一 `pnpm-workspace.yaml` 的 `allowBuilds:`，再重跑同一条 `add`。
+
+### 3）安装 Agent Preset
 
 ```sh
 pnpm --dir "${DSH_HOME:-$HOME/.dsh}/profiles/web" exec dsh-photo-pick-setup-preset
 ```
 
-Windows PowerShell：
+Windows PowerShell（默认 home）：
 
 ```powershell
 pnpm --dir "$env:USERPROFILE\.dsh\profiles\web" exec dsh-photo-pick-setup-preset
 ```
 
-硬刷新或重启 `dsh web`。打分模型可在 **设置 → 照片择优** 勾选并选择；细节见 [SETUP-VISION.md](SETUP-VISION.md)。
+自定义 `DSH_HOME`：
+
+```powershell
+pnpm --dir "$env:DSH_HOME\profiles\web" exec dsh-photo-pick-setup-preset
+```
+
+### 4）刷新
+
+硬刷新或重启 `dsh web`（Ctrl/Cmd+Shift+R）。打分模型在 **设置 → 照片择优**；细节见 [SETUP-VISION.md](SETUP-VISION.md)。
 
 ## 怎么用
 

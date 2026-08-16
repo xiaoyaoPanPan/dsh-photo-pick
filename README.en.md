@@ -15,40 +15,84 @@
   </p>
 </p>
 
-## Install in 10 seconds
+## Install in 10 seconds (recommended: give an AI this prompt)
 
 Copy this prompt to Cursor / ChatGPT / Claude / DeepSeek Harness / your coding agent:
 
 ```text
 Follow https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/INSTALL.en.md
-to install dsh-photo-pick into my DeepSeek Harness web profile.
+strictly to install dsh-photo-pick into my DeepSeek Harness web profile.
+
+Hard order (skipping a step fails):
+1) Identify the home the running dsh web actually uses (DSH_HOME, else ~/.dsh / %USERPROFILE%\.dsh). Edit that profiles/web/pnpm-workspace.yaml and set blockExoticSubdeps: false (do not delete existing keys).
+2) Run: dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
+3) If allowBuilds / ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED: paste the exact key pnpm printed into the same pnpm-workspace.yaml, then re-run the same add. Do not edit the plugin source.
+4) Run: pnpm --dir "<that home>/profiles/web" exec dsh-photo-pick-setup-preset
+5) Hard-refresh or restart dsh web. Report each step with success/failure and the raw error.
+
 After install: with dsh web running, GET /api/photo-pick/settings, check for any model with supportsVision=true, and report what you found.
 - If yes: ask me whether to wire it into Photo pick; only if I agree, PUT the same endpoint with visionEnabled=true and that visionLlmProvider / visionModel.
 - If no: walk me through https://github.com/xiaoyaoPanPan/dsh-photo-pick/blob/main/SETUP-VISION.en.md to add a vision-capable custom model (do not push a specific vendor), then ask again whether to wire it up.
-Report each step.
 ```
+
+Step-by-step details: [INSTALL.en.md](INSTALL.en.md).
 
 ## Or install yourself
 
-Needs official `dsh` and a working `dsh web` profile.
+Needs official `dsh`, `pnpm`, and a working `dsh web`.
+
+**Order matters.** Edit config first, then `add`.
+
+### 1) Allow git transitive deps (required on pnpm 11)
+
+Edit the web profile `pnpm-workspace.yaml`:
+
+- Default: `~/.dsh/profiles/web/pnpm-workspace.yaml` (Windows: `%USERPROFILE%\.dsh\profiles\web\pnpm-workspace.yaml`)
+- If `DSH_HOME` is set: `$DSH_HOME/profiles/web/pnpm-workspace.yaml`
+
+Merge (keep existing keys):
+
+```yaml
+blockExoticSubdeps: false
+```
+
+Skipping this usually yields `ERR_PNPM_EXOTIC_SUBDEP`.
+
+### 2) Add the plugin
 
 ```sh
 dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
 ```
 
-On pnpm 11: first set `blockExoticSubdeps: false` in `~/.dsh/profiles/web/pnpm-workspace.yaml` (or `$DSH_HOME/profiles/web/…`), then run the `add` above. If pnpm asks for `allowBuilds`, paste the printed keys and re-run. Next:
+If `dsh` is not on PATH:
+
+```sh
+npx -y --package @deepseek-ai/dsh dsh plugin --profile web add "github:xiaoyaoPanPan/dsh-photo-pick#path:dsh-photo-pick-app"
+```
+
+If pnpm asks for `allowBuilds`, paste the **exact printed key** under `allowBuilds:` in the same file, then re-run the same `add`.
+
+### 3) Install the Agent Preset
 
 ```sh
 pnpm --dir "${DSH_HOME:-$HOME/.dsh}/profiles/web" exec dsh-photo-pick-setup-preset
 ```
 
-Windows PowerShell:
+Windows PowerShell (default home):
 
 ```powershell
 pnpm --dir "$env:USERPROFILE\.dsh\profiles\web" exec dsh-photo-pick-setup-preset
 ```
 
-Hard-refresh or restart `dsh web`. For scoring, use **Settings → Photo pick**, or see [SETUP-VISION.en.md](SETUP-VISION.en.md).
+Custom `DSH_HOME`:
+
+```powershell
+pnpm --dir "$env:DSH_HOME\profiles\web" exec dsh-photo-pick-setup-preset
+```
+
+### 4) Refresh
+
+Hard-refresh or restart `dsh web` (Ctrl/Cmd+Shift+R). Scoring models: **Settings → Photo pick**; see [SETUP-VISION.en.md](SETUP-VISION.en.md).
 
 ## Use
 
